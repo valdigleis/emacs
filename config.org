@@ -1,0 +1,45 @@
+#+title: Emacs for Noobs
+#+author: Valdigleis (Dk4LL)
+
+* Preparação do ambiente
+
+1. Primeiramente, instale o Emacs no seu ambiente, no Debian isso pode ser feito usando o comando: =sudo apt install emacs-nox emacs-common=   
+2. Agora execute os comandos =mkdir ~/.config/emacs= e  =touch ~/.config/emacs/init.el ~/.config/emacs/config.org= para criar os arquivos básicos
+3. Cole para o arquivo =~/.config/init= o código:
+#+begin_example
+(org-babel-load-file
+  (expand-file-name "config.org" user-emacs-directory))
+#+end_example
+
+* Configurações Básicas
+
+** Desabilitar tela de boas-vindas e ativas o scratch
+
+#+begin_src emacs-lisp
+  (setq inhibit-startup-message t)
+#+end_src
+
+** Configuração básica da interface (UI)
+
+#+begin_src emacs-lisp
+  ; Desabilita o menu bar
+  (menu-bar-mode -1)
+#+end_src
+
+** Configuração básica de comportamento
+
+#+begin_src emacs-lisp
+  ; Desativar backups globalmente
+  (setq make-backup-files nil)
+  ; Habilita o salvamento da posição do cursor ao sair
+  (save-place-mode 1)
+  ; Habilita a funcionalidade de lembrar de arquivos recentes
+  (recentf-mode 1)
+  ; Habilita o salvamento do historico de comandos
+  (savehist-mode 1)
+  ; Habilita a atualização automática para os buffers dos arquivos modificados externamente
+  (setopt auto-revert-avoid-polling t)
+  ; Define o intervalo em segundos que o Emacs irá verificar se houve atualização externa dos arquivos
+  (setopt auto-revert-interval 60)
+#+end_src
+

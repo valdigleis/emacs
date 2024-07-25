@@ -1,0 +1,10 @@
+# Ignorar os diretórios
+/auto-save-list/
+/eln-cache/
+/elpa/
+/emacs-backup/
+
+# Igonora os arquivos
+history
+places
+recentf
