@@ -58,8 +58,7 @@
         (electric-pair-mode 1)
         ; Habilita o uso do ESC para sair do minibuffer
         (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
-        ; Desabilita o atalho C-z (minimizar)
-        (global-unset-key (kbd "C-z"))
+      
     #+end_src
 
 ** Configuração básica da interface (UI)
