@@ -24,7 +24,7 @@
 (setopt sentence-end-double-space nil)
 ; Desabilita o sinal sonoro
 (setq ring-bell-function 'ignore)
-; Desabilita o sinal visual
+; Desabilita o sinal visual (no modo gráfico)
 (when (display-graphic-p)
   (setq visible-bell t))
 ; desabilita o sinal visual (no modo gráfico)
@@ -36,6 +36,8 @@
 (electric-pair-mode 1)
 ; Habilita o uso do ESC para sair do minibuffer
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+; Desabilita o atalho C-z (minimizar)
+(global-unset-key (kbd "C-z"))
 
 ; Habilita a exibição do número da coluna
 (column-number-mode 1)
@@ -78,6 +80,28 @@
                 eshell-mode-hook
                 help-mode-hook))
         (add-hook mode (lambda () (display-line-numbers-mode 0))))
+
+; Hibilita o orgmode
+(require 'org)
+; Adicionar extensão .org ao Org Mode
+(add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
+; Habilitar a visualização do folding
+(setq org-startup-folded t)
+; Habilitar folding para códigos dentro de blocos de código
+(setq org-src-fontify-natively t)
+(setq org-src-tab-acts-natively t)
+(setq org-edit-src-content-indentation 0)
+
+; Diretório padrão para backups
+(setq backup-directory-alist '((".*" . "~/.local/share/Trash/files")))
+; Configuração do arquivo padrão
+(setq custom-file (locate-user-emacs-file "custom.el"))
+(load custom-file 'noerror 'nomessage)
+
+; Fonte padrão
+(set-face-attribute 'default nil :font "FiraMono Nerd Font Mono 13")
+(set-face-attribute 'variable-pitch nil :font "FiraMono Nerd Font Mono 13")
+(set-face-attribute 'fixed-pitch nil :font "FiraMono Nerd Font Mono 13")
 
 (require 'package)
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
