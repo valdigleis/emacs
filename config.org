@@ -14,81 +14,157 @@
 4. Instale o zsh para tirar maior proveito desta configuração, a instalação pode ser feita usando o comando =sudo apt install zsh=
    
 * Configurações Básicas
-** Configuração básica de comportamento
-
+** Desabilitar tela de boas-vindas e ativas o scratch
     #+begin_src emacs-lisp
-        ; Desabilitar tela de boas-vindas e ativas o scratch
         (setq inhibit-startup-message t)
-        ; Habilita o uso de espaços para a tabulação
+    #+end_src
+
+** Habilita o uso de espaços para a tabulação
+    #+begin_src emacs-lisp
         (setq-default indent-tabs-mode nil)
-        ; Habilita deletar texto selecionado ao digitar
+    #+end_src
+
+** Habilita deletar texto selecionado ao digitar
+    #+begin_src emacs-lisp
         (delete-selection-mode t)
-        ; Desativar backups globalmente
+    #+end_src
+
+** Desativar backups globalmente
+    #+begin_src emacs-lisp
         (setq make-backup-files nil)
-        ; Habilita o salvamento da posição do cursor ao sair
+    #+end_src
+
+** Habilita o salvamento da posição do cursor ao sair
+    #+begin_src emacs-lisp
         (save-place-mode 1)
-        ; Habilita a funcionalidade de lembrar de arquivos recentes
+    #+end_src
+
+** Habilita a funcionalidade de lembrar de arquivos recentes
+    #+begin_src emacs-lisp
         (recentf-mode 1)
-        ; Habilita o salvamento do historico de comandos
+    #+end_src
+
+** Habilita o salvamento do historico de comandos
+    #+begin_src emacs-lisp
         (savehist-mode 1)
-        ; Habilita a atualização automática para os buffers dos arquivos modificados externamente
+    #+end_src
+
+** Habilita a atualização automática para os buffers dos arquivos modificados externamente
+    #+begin_src emacs-lisp
         (setopt auto-revert-avoid-polling t)
-        ; Define o intervalo em segundos que o Emacs irá verificar se houve atualização externa dos arquivos
+    #+end_src
+
+** Define o intervalo em segundos que o Emacs irá verificar se houve atualização externa dos arquivos
+    #+begin_src emacs-lisp
         (setopt auto-revert-interval 60)
-        ; Habilita o Emacs para verificar informações de controle de versão automaticamente
+    #+end_src
+
+** Habilita o Emacs para verificar informações de controle de versão automaticamente
+    #+begin_src emacs-lisp
         (setopt auto-revert-check-vc-info t)
-        ; Habilita a movimentação entre janelas usando da combinação C-teclas direcionais
+    #+end_src
+
+** Habilita a movimentação entre janelas usando da combinação C-teclas direcionais
+    #+begin_src emacs-lisp
         (windmove-default-keybindings 'control)
-        ; Desabilita a necessidade das sentenças terem que terminar com dois espaços
+    #+end_src
+
+** Desabilita a necessidade das sentenças terem que terminar com dois espaços
+    #+begin_src emacs-lisp
         (setopt sentence-end-double-space nil)
-        ; Desabilita o sinal sonoro
+    #+end_src
+
+** Desabilita o sinal sonoro
+    #+begin_src emacs-lisp
         (setq ring-bell-function 'ignore)
-        ; Desabilita o sinal visual (no modo gráfico)
+    #+end_src
+
+** Desabilita o sinal visual e sonoro do Emacs (Apenas modo gráfico)
+    #+begin_src emacs-lisp
         (when (display-graphic-p)
           (setq visible-bell t))
-        ; desabilita o sinal visual (no modo gráfico)
         (when (display-graphic-p)
           (setq visible-bell t))
-        ; Habilita o uso de y e n para confirmações ou negações no Emacs
+    #+end_src
+
+** Habilita o uso de y e n para confirmações ou negações no Emacs
+    #+begin_src emacs-lisp
         (fset 'yes-or-no-p 'y-or-n-p)
-        ; Habilita o fechamento de pares
+    #+end_src
+
+** Habilita o fechamento de pares
+    #+begin_src emacs-lisp
         (electric-pair-mode 1)
-        ; Habilita o uso do ESC para sair do minibuffer
+    #+end_src
+
+** Habilita o uso do ESC para sair do minibuffer e desabilita o C-z
+    #+begin_src emacs-lisp
         (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
-        ; Desabilita o atalho C-z (minimizar)
         (global-unset-key (kbd "C-z"))
     #+end_src
 
-** Configuração básica da interface (UI)
-
+* Configuração básica da interface (UI)
+** Habilita a exibição do número da coluna
     #+begin_src emacs-lisp
-        ; Habilita a exibição do número da coluna
         (column-number-mode 1)
-        ; Desabilita o menu bar
+    #+end_src
+
+** Desabilita o menu bar
+    #+begin_src emacs-lisp
         (menu-bar-mode -1)
-        ; Desabilita a tool bar (no modo gráfico)
+    #+end_src
+
+** Desabilita a tool bar (no modo gráfico)
+    #+begin_src emacs-lisp
         (when (display-graphic-p)
           (tool-bar-mode -1))
-        ; Desabilita a barra de navegação (no modo gráfico)
+    #+end_src
+
+** Desabilita a barra de navegação (no modo gráfico)
+    #+begin_src emacs-lisp
         (when (display-graphic-p)
           (scroll-bar-mode -1))
-        ; Desabilita a tooltip (no modo gráfico)
+    #+end_src
+
+** Desabilita a tooltip (no modo gráfico)
+    #+begin_src emacs-lisp
         (when (display-graphic-p)
           (tooltip-mode -1))
-        ; Desabilita a visualização dos espaços em branco no final das linhas
+    #+end_src
+
+** Desabilita a visualização dos espaços em branco no final das linhas
+    #+begin_src emacs-lisp
         (setopt show-trailing-whitespace nil)
-        ; Melhora efeito visual do texto sublinhado
+    #+end_src
+
+** Melhora efeito visual do texto sublinhado
+    #+begin_src emacs-lisp
         (setopt x-underline-at-descent-line nil)
-        ; Habilita o destaque da linha atual do cursor
+    #+end_src
+
+** Habilita o destaque da linha atual do cursor
+    #+begin_src emacs-lisp
         (global-hl-line-mode t)
-        ; Define a cor usada para o destaque da linha
+    #+end_src
+
+** Define a cor usada para o destaque da linha
+    #+begin_src emacs-lisp
         (set-face-background 'hl-line "#5e4a46")
         (set-face-foreground 'highlight nil)
-        ; Habilita a quebra visual de linha
+    #+end_src
+
+** Habilita a quebra visual de linha
+    #+begin_src emacs-lisp
         (global-visual-line-mode t)
-        ; Habilita os indicadores visuais na margem esquerda da janela de edição
+    #+end_src
+
+** Habilita os indicadores visuais na margem esquerda da janela de edição
+    #+begin_src emacs-lisp
         (setopt indicate-buffer-boundaries 'left)
-        ; Define a borda do Emacs em 10px (no modo gráfico)
+    #+end_src
+
+** Define a borda do Emacs em 10px (no modo gráfico)
+    #+begin_src emacs-lisp
         (when (display-graphic-p)
           (set-fringe-mode 10))
     #+end_src
@@ -96,11 +172,8 @@
 ** Configuração para exibição das linhas
 
     #+begin_src emacs-lisp
-        ; Habilita a exibição do número das linhas
         (global-display-line-numbers-mode 1)
-        ; Customizar o formato ('relative, 'visual ou 't para absoluto) dos números de linhas
         (setq display-line-numbers-type 'relative)
-        ; Desabilitar números de linha para modos específicos
         (dolist (mode '(org-mode-hook
                         term-mode-hook
                         shell-mode-hook
@@ -109,59 +182,66 @@
                 (add-hook mode (lambda () (display-line-numbers-mode 0))))
     #+end_src
 
-** Configuração global do Orgmode
-
+** Configuração das fontes usadas (é necessário instalar a FireMono Nerd Font no seus sitema)
     #+begin_src emacs-lisp
-        ; Hibilita o orgmode
+        (set-face-attribute 'default nil :font "FiraMono Nerd Font Mono 13")
+        (set-face-attribute 'variable-pitch nil :font "FiraMono Nerd Font Mono 13")
+        (set-face-attribute 'fixed-pitch nil :font "FiraMono Nerd Font Mono 13")
+    #+end_src
+
+* Configuração do Orgmode
+** Ativar o orgmode
+    #+begin_src emacs-lisp
         (require 'org)
-        ; Adicionar extensão .org ao Org Mode
+    #+end_src
+
+** Adicionar extensão .org ao Org Mode
+    #+begin_src emacs-lisp
         (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
-        ; Habilitar a visualização do folding
+    #+end_src
+
+** Habilitar a visualização do folding
+    #+begin_src emacs-lisp
         (setq org-startup-folded t)
-        ; Habilitar folding para códigos dentro de blocos de código
+    #+end_src
+
+** Habilitar folding para códigos dentro de blocos de código
+    #+begin_src emacs-lisp
         (setq org-src-fontify-natively t)
         (setq org-src-tab-acts-natively t)
         (setq org-edit-src-content-indentation 0)
     #+end_src
 
-** Configuração de Backups, custom e fontes
-
+* Configuração de Backups, custom e fontes
+** Define o diretório padrão para backups
     #+begin_src emacs-lisp
-        ; Diretório padrão para backups
         (setq backup-directory-alist '((".*" . "~/.local/share/Trash/files")))
-        ; Configuração do arquivo padrão
+    #+end_src
+
+** Define o arquivo padrão para escrever as configurações
+    #+begin_src emacs-lisp
         (setq custom-file (locate-user-emacs-file "custom.el"))
         (load custom-file 'noerror 'nomessage)
     #+end_src
-
-    #+begin_src emacs-lisp
-        ; Fonte padrão
-        (set-face-attribute 'default nil :font "FiraMono Nerd Font Mono 13")
-        (set-face-attribute 'variable-pitch nil :font "FiraMono Nerd Font Mono 13")
-        (set-face-attribute 'fixed-pitch nil :font "FiraMono Nerd Font Mono 13")
-    #+end_src
     
 * Configuração para gestão de pacotes
+1. Inicialização (coneção) com os repostiórios de pacotes
+ #+begin_src emacs-lisp
+   (require 'package)
+   (setq package-archives '(("melpa" . "https://melpa.org/packages/")
+                            ("elpa" . "https://elpa.gnu.org/packages/")))
+   (package-initialize)
+   (unless package-archive-contents
+     (package-refresh-contents)) 
+ #+end_src
 
-  1. Inicialização (coneção) com os repostiórios de pacotes
-
-     #+begin_src emacs-lisp
-       (require 'package)
-       (setq package-archives '(("melpa" . "https://melpa.org/packages/")
-                                ("elpa" . "https://elpa.gnu.org/packages/")))
-       (package-initialize)
-       (unless package-archive-contents
-         (package-refresh-contents)) 
-     #+end_src
-
-  2. Configuração do Helper de gerenciamento "use-package"
-
-     #+begin_src emacs-lisp
-       (unless (package-installed-p 'use-package)
-	 (package-install 'use-package))
-       (require 'use-package)
-       (setq use-package-always-ensure t)
-     #+end_src
+2. Configuração do Helper de gerenciamento "use-package"
+ #+begin_src emacs-lisp
+   (unless (package-installed-p 'use-package)
+      (package-install 'use-package))
+   (require 'use-package)
+   (setq use-package-always-ensure t)
+ #+end_src
      
 * Instalação dos Pacotes
 

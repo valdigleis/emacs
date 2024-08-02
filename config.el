@@ -1,79 +1,72 @@
-; Desabilitar tela de boas-vindas e ativas o scratch
 (setq inhibit-startup-message t)
-; Habilita o uso de espaços para a tabulação
+
 (setq-default indent-tabs-mode nil)
-; Habilita deletar texto selecionado ao digitar
+
 (delete-selection-mode t)
-; Desativar backups globalmente
+
 (setq make-backup-files nil)
-; Habilita o salvamento da posição do cursor ao sair
+
 (save-place-mode 1)
-; Habilita a funcionalidade de lembrar de arquivos recentes
+
 (recentf-mode 1)
-; Habilita o salvamento do historico de comandos
+
 (savehist-mode 1)
-; Habilita a atualização automática para os buffers dos arquivos modificados externamente
+
 (setopt auto-revert-avoid-polling t)
-; Define o intervalo em segundos que o Emacs irá verificar se houve atualização externa dos arquivos
+
 (setopt auto-revert-interval 60)
-; Habilita o Emacs para verificar informações de controle de versão automaticamente
+
 (setopt auto-revert-check-vc-info t)
-; Habilita a movimentação entre janelas usando da combinação C-teclas direcionais
+
 (windmove-default-keybindings 'control)
-; Desabilita a necessidade das sentenças terem que terminar com dois espaços
+
 (setopt sentence-end-double-space nil)
-; Desabilita o sinal sonoro
+
 (setq ring-bell-function 'ignore)
-; Desabilita o sinal visual (no modo gráfico)
+
 (when (display-graphic-p)
   (setq visible-bell t))
-; desabilita o sinal visual (no modo gráfico)
 (when (display-graphic-p)
   (setq visible-bell t))
-; Habilita o uso de y e n para confirmações ou negações no Emacs
+
 (fset 'yes-or-no-p 'y-or-n-p)
-; Habilita o fechamento de pares
+
 (electric-pair-mode 1)
-; Habilita o uso do ESC para sair do minibuffer
+
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
-; Desabilita o atalho C-z (minimizar)
 (global-unset-key (kbd "C-z"))
 
-; Habilita a exibição do número da coluna
 (column-number-mode 1)
-; Desabilita o menu bar
+
 (menu-bar-mode -1)
-; Desabilita a tool bar (no modo gráfico)
+
 (when (display-graphic-p)
   (tool-bar-mode -1))
-; Desabilita a barra de navegação (no modo gráfico)
+
 (when (display-graphic-p)
   (scroll-bar-mode -1))
-; Desabilita a tooltip (no modo gráfico)
+
 (when (display-graphic-p)
   (tooltip-mode -1))
-; Desabilita a visualização dos espaços em branco no final das linhas
+
 (setopt show-trailing-whitespace nil)
-; Melhora efeito visual do texto sublinhado
+
 (setopt x-underline-at-descent-line nil)
-; Habilita o destaque da linha atual do cursor
+
 (global-hl-line-mode t)
-; Define a cor usada para o destaque da linha
+
 (set-face-background 'hl-line "#5e4a46")
 (set-face-foreground 'highlight nil)
-; Habilita a quebra visual de linha
+
 (global-visual-line-mode t)
-; Habilita os indicadores visuais na margem esquerda da janela de edição
+
 (setopt indicate-buffer-boundaries 'left)
-; Define a borda do Emacs em 10px (no modo gráfico)
+
 (when (display-graphic-p)
   (set-fringe-mode 10))
 
-; Habilita a exibição do número das linhas
 (global-display-line-numbers-mode 1)
-; Customizar o formato ('relative, 'visual ou 't para absoluto) dos números de linhas
 (setq display-line-numbers-type 'relative)
-; Desabilitar números de linha para modos específicos
 (dolist (mode '(org-mode-hook
                 term-mode-hook
                 shell-mode-hook
@@ -81,27 +74,24 @@
                 help-mode-hook))
         (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
-; Hibilita o orgmode
+(set-face-attribute 'default nil :font "FiraMono Nerd Font Mono 13")
+(set-face-attribute 'variable-pitch nil :font "FiraMono Nerd Font Mono 13")
+(set-face-attribute 'fixed-pitch nil :font "FiraMono Nerd Font Mono 13")
+
 (require 'org)
-; Adicionar extensão .org ao Org Mode
+
 (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
-; Habilitar a visualização do folding
+
 (setq org-startup-folded t)
-; Habilitar folding para códigos dentro de blocos de código
+
 (setq org-src-fontify-natively t)
 (setq org-src-tab-acts-natively t)
 (setq org-edit-src-content-indentation 0)
 
-; Diretório padrão para backups
 (setq backup-directory-alist '((".*" . "~/.local/share/Trash/files")))
-; Configuração do arquivo padrão
+
 (setq custom-file (locate-user-emacs-file "custom.el"))
 (load custom-file 'noerror 'nomessage)
-
-; Fonte padrão
-(set-face-attribute 'default nil :font "FiraMono Nerd Font Mono 13")
-(set-face-attribute 'variable-pitch nil :font "FiraMono Nerd Font Mono 13")
-(set-face-attribute 'fixed-pitch nil :font "FiraMono Nerd Font Mono 13")
 
 (require 'package)
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
@@ -111,7 +101,7 @@
   (package-refresh-contents))
 
 (unless (package-installed-p 'use-package)
-  (package-install 'use-package))
+   (package-install 'use-package))
 (require 'use-package)
 (setq use-package-always-ensure t)
 
