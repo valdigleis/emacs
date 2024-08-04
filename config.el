@@ -78,6 +78,8 @@
 (set-face-attribute 'variable-pitch nil :font "FiraMono Nerd Font Mono 13")
 (set-face-attribute 'fixed-pitch nil :font "FiraMono Nerd Font Mono 13")
 
+(add-to-list 'default-frame-alist '(alpha-background . 100))
+
 (require 'org)
 
 (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
@@ -105,9 +107,51 @@
 (require 'use-package)
 (setq use-package-always-ensure t)
 
+;    (use-package evil
+;      :init
+;      (setq evil-want-integration t
+;            evil-want-keybinding nil
+;            evil-vsplit-window-right t
+;            evil-split-window-below t
+;            evil-undo-system 'undo-redo)
+;      (evil-mode))
+
+;    (use-package evil-collecton
+;      :after evil
+;      :config
+;      (add-to-list 'evil-collection-mode-list 'help)
+;      (evil-collection-init))
+
+(when (display-graphic-p)
+ (use-package keycast
+   :init
+   (add-to-list 'global-mode-string '("" mode-line-keycast))
+   (keycast-mode-line-mode)))
+
+(when (display-graphic-p)
+  (after! keycast
+          (define-minor-mode keycast-mode
+          "Show current keys in mode line!"
+          :global t
+          (if keycast-mode
+              (add-hook 'pre-command-hook 'keycast--update t)
+            (remove-hook 'pre-command-hook 'keycast--update))))
+  (add-to-list 'global-mode-string '("" keycast-mode-line))
+  (require 'keycast))
+
+(when (display-graphic-p)
+  (use-package vertico
+    :bind (:map vertico-map
+              ("C-k" . vertico-next)
+              ("C-j" . vertico-previous)
+              ("C-e" . vertico-exit)
+           :map minibuffer-local-map
+              ("M-h" . backward-kill-word))
+    :custom
+    (vertico-cycle t)
+    :init
+    (vertico-mode)))
+
 (use-package rainbow-mode
 :diminish
 :hook org-mode prog-mode)
-
-; Carregar tema
-(load-theme 'modus-vivendi)
