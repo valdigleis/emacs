@@ -97,7 +97,8 @@
 
 (require 'package)
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
-                         ("elpa" . "https://elpa.gnu.org/packages/")))
+                         ("elpa" . "https://elpa.gnu.org/packages/")
+                         ("gnu" . "https://elpa.gnu.org/packages/")))
 (package-initialize)
 (unless package-archive-contents
   (package-refresh-contents))
@@ -122,35 +123,60 @@
 ;      (add-to-list 'evil-collection-mode-list 'help)
 ;      (evil-collection-init))
 
-(when (display-graphic-p)
- (use-package keycast
-   :init
-   (add-to-list 'global-mode-string '("" mode-line-keycast))
-   (keycast-mode-line-mode)))
+(use-package keycast
+  :config
+  (add-to-list 'global-mode-string '("" keycast-mode-line-mode ""))
+  (keycast-mode-line-mode))
 
-(when (display-graphic-p)
-  (after! keycast
-          (define-minor-mode keycast-mode
-          "Show current keys in mode line!"
-          :global t
-          (if keycast-mode
-              (add-hook 'pre-command-hook 'keycast--update t)
-            (remove-hook 'pre-command-hook 'keycast--update))))
-  (add-to-list 'global-mode-string '("" keycast-mode-line))
-  (require 'keycast))
-
-(when (display-graphic-p)
-  (use-package vertico
-    :bind (:map vertico-map
-              ("C-k" . vertico-next)
-              ("C-j" . vertico-previous)
+(use-package vertico
+  :bind (:map vertico-map
+              ("C-i" . vertico-previous)
+              ("C-o" . vertico-next)
               ("C-e" . vertico-exit)
-           :map minibuffer-local-map
+              :map minibuffer-local-map
               ("M-h" . backward-kill-word))
-    :custom
-    (vertico-cycle t)
-    :init
-    (vertico-mode)))
+  :custom
+  (vertico-cycle t)
+  :init
+  (vertico-mode))
+
+(use-package marginalia
+  :after vertico
+  :custom
+  (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
+  :init
+  (marginalia-mode))
+
+(use-package orderless
+  :config
+  (setq completion-styles '(orderless basic)))
+
+(use-package consult)
+
+(use-package which-key
+  :init
+  (which-key-mode 1)
+  :diminish
+  :config
+  (setq which-key-side-window-location 'bottom
+        which-key-sort-order #'which-key-key-order-alpha
+        which-key-allow-imprecise-window-fit nil
+        which-key-sort-uppercase-first nil
+        which-key-add-column-padding 1
+        which-key-max-display-columns nil
+        which-key-min-display-lines 8
+        which-key-side-window-slot -10
+        which-key-side-window-max-height 0.25
+        which-key-idle-delay 0.9
+        which-key-allow-imprecise-widow-fit nil
+        which-key-separator " » "))
+
+(use-package doom-themes
+  :config
+  (setq doom-themes-enable-bold t
+        doom-themes-enable-italic t)
+  (load-theme 'doom-oceanic-next t)
+  (doom-themes-org-config))
 
 (use-package rainbow-mode
 :diminish

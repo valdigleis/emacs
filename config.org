@@ -231,12 +231,13 @@
 * Configuração para gestão de pacotes
 1. Inicialização (coneção) com os repostiórios de pacotes
  #+begin_src emacs-lisp
-   (require 'package)
-   (setq package-archives '(("melpa" . "https://melpa.org/packages/")
-                            ("elpa" . "https://elpa.gnu.org/packages/")))
-   (package-initialize)
-   (unless package-archive-contents
-     (package-refresh-contents)) 
+ (require 'package)
+ (setq package-archives '(("melpa" . "https://melpa.org/packages/")
+                          ("elpa" . "https://elpa.gnu.org/packages/")
+                          ("gnu" . "https://elpa.gnu.org/packages/")))
+ (package-initialize)
+ (unless package-archive-contents
+   (package-refresh-contents)) 
  #+end_src
 
 2. Configuração do Helper de gerenciamento "use-package"
@@ -249,6 +250,7 @@
      
 * Instalação dos Pacotes
 ** Evil Mode
+O lado negro da força, uma emulação do Vim no Emacs.
 #+begin_src emacs-lisp
 ;    (use-package evil
 ;      :init
@@ -268,42 +270,87 @@
 ;      (evil-collection-init))
 #+end_src
 
-** Keycast (Apenas no modo gráfico)
+** Keycast
+Adiciona no modeline a exibição das teclas acionadas.
 #+begin_src emacs-lisp
-(when (display-graphic-p)
- (use-package keycast
-   :init
-   (add-to-list 'global-mode-string '("" mode-line-keycast))
-   (keycast-mode-line-mode)))
-#+end_src
-
-#+begin_src emacs-lisp
-(when (display-graphic-p)
-  (after! keycast
-          (define-minor-mode keycast-mode
-          "Show current keys in mode line!"
-          :global t
-          (if keycast-mode
-              (add-hook 'pre-command-hook 'keycast--update t)
-            (remove-hook 'pre-command-hook 'keycast--update))))
-  (add-to-list 'global-mode-string '("" keycast-mode-line))
-  (require 'keycast))
+  (use-package keycast
+    :config
+    (add-to-list 'global-mode-string '("" keycast-mode-line-mode ""))
+    (keycast-mode-line-mode))
 #+end_src
 
 ** Vertico
+Incrementa o menu de buscas padrão do Emacs.
 #+begin_src emacs-lisp
-(when (display-graphic-p)
-  (use-package vertico
-    :bind (:map vertico-map
-              ("C-k" . vertico-next)
-              ("C-j" . vertico-previous)
+(use-package vertico
+  :bind (:map vertico-map
+              ("C-i" . vertico-previous)
+              ("C-o" . vertico-next)
               ("C-e" . vertico-exit)
-           :map minibuffer-local-map
+              :map minibuffer-local-map
               ("M-h" . backward-kill-word))
-    :custom
-    (vertico-cycle t)
-    :init
-    (vertico-mode)))
+  :custom
+  (vertico-cycle t)
+  :init
+  (vertico-mode))
+#+end_src
+
+** Marginalia
+Adiciona descrição dos itens no meu de buscas padrão do Emacs.
+#+begin_src emacs-lisp
+(use-package marginalia
+  :after vertico
+  :custom
+  (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
+  :init
+  (marginalia-mode))
+#+end_src
+
+** Orderless
+Adiciona busca fuzzy não ordenada para a busca da busca padrão do Emcas.
+#+begin_src emacs-lisp
+(use-package orderless
+  :config
+  (setq completion-styles '(orderless basic)))
+#+end_src
+
+** Consult
+Adiciona melhoras na experiência de uso na consulta e navegação dentro do Emacs.
+#+begin_src emacs-lisp
+(use-package consult)
+#+end_src
+
+** Which-key
+Adiciona a camada de sugestão de comandos no Emacs.
+#+begin_src emacs-lisp
+(use-package which-key
+  :init
+  (which-key-mode 1)
+  :diminish
+  :config
+  (setq which-key-side-window-location 'bottom
+        which-key-sort-order #'which-key-key-order-alpha
+        which-key-allow-imprecise-window-fit nil
+        which-key-sort-uppercase-first nil
+        which-key-add-column-padding 1
+        which-key-max-display-columns nil
+        which-key-min-display-lines 8
+        which-key-side-window-slot -10
+        which-key-side-window-max-height 0.25
+        which-key-idle-delay 0.9
+        which-key-allow-imprecise-widow-fit nil
+        which-key-separator " » "))
+#+end_src
+
+** Instalação do gerenciador de tema de cores
+Instala o doom-themes para gerenciar os temas de cores
+#+begin_src emacs-lisp
+(use-package doom-themes
+  :config
+  (setq doom-themes-enable-bold t
+        doom-themes-enable-italic t)
+  (load-theme 'doom-oceanic-next t)
+  (doom-themes-org-config))
 #+end_src
 
 ** Rainbow Mode
