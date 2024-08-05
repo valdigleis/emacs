@@ -190,93 +190,73 @@
 
 ** Transparência da interface
 #+begin_src emacs-lisp
-(add-to-list 'default-frame-alist '(alpha-background . 100))
+(add-to-list 'default-frame-alist '(alpha-background . 90))
 #+end_src
-
-* Configuração do Orgmode
-** Ativar o orgmode
-    #+begin_src emacs-lisp
-        (require 'org)
-    #+end_src
-
-** Adicionar extensão .org ao Org Mode
-    #+begin_src emacs-lisp
-        (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
-    #+end_src
-
-** Habilitar a visualização do folding
-    #+begin_src emacs-lisp
-        (setq org-startup-folded t)
-    #+end_src
-
-** Habilitar folding para códigos dentro de blocos de código
-    #+begin_src emacs-lisp
-        (setq org-src-fontify-natively t)
-        (setq org-src-tab-acts-natively t)
-        (setq org-edit-src-content-indentation 0)
-    #+end_src
 
 * Configuração de Backups, custom e fontes
 ** Define o diretório padrão para backups
-    #+begin_src emacs-lisp
-        (setq backup-directory-alist '((".*" . "~/.local/share/Trash/files")))
-    #+end_src
+#+begin_src emacs-lisp
+(setq backup-directory-alist '((".*" . "~/.local/share/Trash/files")))
+#+end_src
 
 ** Define o arquivo padrão para escrever as configurações
-    #+begin_src emacs-lisp
-        (setq custom-file (locate-user-emacs-file "custom.el"))
-        (load custom-file 'noerror 'nomessage)
-    #+end_src
+#+begin_src emacs-lisp
+(setq custom-file (locate-user-emacs-file "custom.el"))
+(load custom-file 'noerror 'nomessage)
+#+end_src
     
 * Configuração para gestão de pacotes
-1. Inicialização (coneção) com os repostiórios de pacotes
- #+begin_src emacs-lisp
- (require 'package)
- (setq package-archives '(("melpa" . "https://melpa.org/packages/")
+1. Inicialização (conexão) com os repostiórios de pacotes
+#+begin_src emacs-lisp
+(require 'package)
+(setq package-archives '(("melpa" . "https://melpa.org/packages/")
                           ("elpa" . "https://elpa.gnu.org/packages/")
                           ("gnu" . "https://elpa.gnu.org/packages/")))
- (package-initialize)
- (unless package-archive-contents
-   (package-refresh-contents)) 
- #+end_src
+(package-initialize)
+(unless package-archive-contents
+  (package-refresh-contents)) 
+#+end_src
 
 2. Configuração do Helper de gerenciamento "use-package"
- #+begin_src emacs-lisp
-   (unless (package-installed-p 'use-package)
-      (package-install 'use-package))
-   (require 'use-package)
-   (setq use-package-always-ensure t)
- #+end_src
-     
+#+begin_src emacs-lisp
+(unless (package-installed-p 'use-package)
+   (package-install 'use-package))
+(require 'use-package)
+(setq use-package-always-ensure t)
+#+end_src
+
+* Definir funções elisp usadas no Emacs
+Aqui são definidas funções elisp!
+** Funcão de recarga as configurações do Emacs
+#+begin_src emacs-lisp
+(defun dk4ll/reaload-settings ()
+  (interactive)
+  (load-file "~/.config/emacs/init.el")) 
+#+end_src
+
+** Função para abrir o arquivo config.org
+#+begin_src emacs-lisp
+(defun dk4ll/open-emacs-config ()
+  (interactive)
+  (find-file "~/.config/emacs/config.org"))
+#+end_src
+
+** Funcão para abrir o diretório de configurações pessoais
+#+begin_src emacs-lisp
+(defun dk4ll/emacs-personal-files ()
+  (interactive)
+  (let ((default-directory "~/.config/emacs/"))
+    (call-interactively 'find-file)))
+#+end_src
+
 * Instalação dos Pacotes
-** Evil Mode
-O lado negro da força, uma emulação do Vim no Emacs.
-#+begin_src emacs-lisp
-;    (use-package evil
-;      :init
-;      (setq evil-want-integration t
-;            evil-want-keybinding nil
-;            evil-vsplit-window-right t
-;            evil-split-window-below t
-;            evil-undo-system 'undo-redo)
-;      (evil-mode))
-#+end_src
-
-#+begin_src emacs-lisp
-;    (use-package evil-collecton
-;      :after evil
-;      :config
-;      (add-to-list 'evil-collection-mode-list 'help)
-;      (evil-collection-init))
-#+end_src
-
 ** Keycast
-Adiciona no modeline a exibição das teclas acionadas.
+Habilita no modeline a exibição das teclas acionadas.
 #+begin_src emacs-lisp
-  (use-package keycast
-    :config
-    (add-to-list 'global-mode-string '("" keycast-mode-line-mode ""))
-    (keycast-mode-line-mode))
+;  (use-package keycast
+;    :config
+;    (add-to-list 'global-mode-string '("" keycast-mode-line-mode ""))
+;    (keycast-mode-line-mode))
 #+end_src
 
 ** Vertico
@@ -342,8 +322,8 @@ Adiciona a camada de sugestão de comandos no Emacs.
         which-key-separator " » "))
 #+end_src
 
-** Instalação do gerenciador de tema de cores
-Instala o doom-themes para gerenciar os temas de cores
+** Doom-themes
+Instala o doom-themes para gerenciar os temas de cores.
 #+begin_src emacs-lisp
 (use-package doom-themes
   :config
@@ -353,6 +333,70 @@ Instala o doom-themes para gerenciar os temas de cores
   (doom-themes-org-config))
 #+end_src
 
+** Doom Modeline
+Adiciona a barra de informações melhorada ao Emacs.
+#+begin_src emacs-lisp
+(use-package doom-modeline
+  :hook
+  (after-init . doom-modeline-mode)
+  :custom
+  (doom-modeline-height 35)
+  (set-face-attribute 'mode-line nil :font "FiraMono Nerd Font Mono" :height 110)
+  (set-face-attribute 'mode-line-inactive nil :font "FiraMono Nerd Font Mono" :height 110)
+  (setq doom-modeline-enable-word-count t))
+#+end_src
+
+** Diminish
+Melhora exibição na doom-modeline.
+#+begin_src emacs-lisp
+(use-package diminish)
+#+end_src
+
+** Rainbow Delimiters
+Ativa multiplas cores nos delimitadores de código aninhados.
+#+begin_src emacs-lisp
+(use-package rainbow-delimiters
+  :hook ((prog-mode . rainbow-delimiters-mode)
+         (emcas-lisp-mode . rainbow-delimiters-mode)
+         (cloujure-mode . raindow-delimiters-mode)))
+#+end_src
+
+** Company
+Disponibiliza recursos avançados para completar.
+#+begin_src emacs-lisp
+(use-package company
+  :defer 2
+  :diminish
+  :custom
+  (company-begin-commands '(self-insert-command))
+  (company-idle-delay .1)
+  (company-minimum-prefix-length 2)
+  (company-show-numbers t)
+  (company-tooltip-align-annotations 't)
+  (global-company-mode t))
+
+(use-package company-box
+  :after company
+  :diminish
+  :hook (company-mode . company-box-mode))
+#+end_src
+
+** Treemacs (escolha entre este e o pacote neotree)
+Disponibiliza ferramenta lateral do tipo explore files na visão hierárquica de árvore.
+#+begin_src emacs-lisp
+(use-package treemacs-all-the-icons)
+
+(use-package treemacs
+  :bind
+  (:map global-map
+        ("M-\\" . treemacs))
+  :config
+  (setq treemacs-no-png-images nil
+        treemacs-is-never-other-window nil)) 
+#+end_src
+
+** Neotree
+
 ** Rainbow Mode
 #+begin_src emacs-lisp
 (use-package rainbow-mode
@@ -360,4 +404,55 @@ Instala o doom-themes para gerenciar os temas de cores
 :hook org-mode prog-mode)
 #+end_src
 
+
+* Configuração do Orgmode
+** Ativar o orgmode
+#+begin_src emacs-lisp
+(require 'org)
+#+end_src
+
+** Adicionar extensão .org ao Org Mode
+#+begin_src emacs-lisp
+(add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
+#+end_src
+
+** Habilitar que os ambientes sejam iniciado com fold fechado
+#+begin_src emacs-lisp
+(setq org-startup-folded t)
+#+end_src
+
+** Habilitar folding para códigos dentro de blocos de código
+#+begin_src emacs-lisp
+(setq org-src-fontify-natively t)
+(setq org-src-tab-acts-natively t)
+(setq org-edit-src-content-indentation 0)
+#+end_src
+
+** Desabilita o fechamento automático do pares de delimitadores
+#+begin_src emacs-lisp
+(add-hook 'org-mode-hook (lambda ()
+                           (setq-local electric-pair-inhibit-predicate
+                                       '(lambda (c)
+                                          (if (char-equal c ?<) t (,electric-pair-inhibit-predicate c))))))
+#+end_src  
+
+** Desabilita a indentação automática e zera as margens
+#+begin_src emacs-lisp
+(electric-indent-mode -1)
+(setq org-edit-src-content-indentation 0)
+#+end_src
+
+** Habilita o org-tempo
+#+begin_src emacs-lisp
+(require 'org-tempo)
+#+end_src
+
+** Instala, Habilita e Configura o org bullets
+#+begin_src emacs-lisp
+(add-hook 'org-mode-hook 'org-indent-mode)
+(use-package org-bullets
+  :custom
+  (org-bullets-bullet-list '("" "" "◆" "◇" "▪" "▪" "▪")))
+(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+#+end_src
 
