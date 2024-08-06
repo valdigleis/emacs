@@ -116,6 +116,21 @@
 ;    (add-to-list 'global-mode-string '("" keycast-mode-line-mode ""))
 ;    (keycast-mode-line-mode))
 
+(use-package evil
+  :init
+  (setq evil-want-integration t
+        evil-want-keybinding nil
+        evil-vsplit-window-right t
+        evil-split-window-below t
+        evil-undo-system 'undo-redo)
+  (evil-mode))
+
+(use-package evil-collection
+  :after evil
+  :config
+  (add-to-list 'evil-collection-mode-list 'help)
+  (evil-collection-init))
+
 (use-package vertico
   :bind (:map vertico-map
               ("C-i" . vertico-previous)
@@ -207,6 +222,11 @@
   :config
   (setq treemacs-no-png-images nil
         treemacs-is-never-other-window nil))
+
+(use-package vterm
+  :config
+  (setq shell-file-name "/usr/bin/zsh"
+        vterm-max-scrollback 5000))
 
 (use-package rainbow-mode
 :diminish

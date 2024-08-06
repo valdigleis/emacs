@@ -259,6 +259,25 @@ Habilita no modeline a exibição das teclas acionadas.
 ;    (keycast-mode-line-mode))
 #+end_src
 
+** Evilmode
+O lado negro da edição, habilita um emulador de Vim para o Emacs.
+#+begin_src emacs-lisp
+(use-package evil
+  :init
+  (setq evil-want-integration t
+        evil-want-keybinding nil
+        evil-vsplit-window-right t
+        evil-split-window-below t
+        evil-undo-system 'undo-redo)
+  (evil-mode))
+
+(use-package evil-collection
+  :after evil
+  :config
+  (add-to-list 'evil-collection-mode-list 'help)
+  (evil-collection-init))
+#+end_src
+
 ** Vertico
 Incrementa o menu de buscas padrão do Emacs.
 #+begin_src emacs-lisp
@@ -395,7 +414,20 @@ Disponibiliza ferramenta lateral do tipo explore files na visão hierárquica de
         treemacs-is-never-other-window nil)) 
 #+end_src
 
-** Neotree
+** Vterm
+Habilita um terminal interno no Emacs, porém, em sistemas baseados em Debian (e talvez outros Unix-like) são necessários as seguintes depedências:
+1. [[https://cmake.org/][CMAKE]].
+2. [[https://www.gnu.org/software/libtool/][libtool]].
+3. [[https://www.leonerd.org.uk/code/libvterm/][libvterm]], cuidado pois existe uma versão para [[https://github.com/akermu/emacs-libvterm?tab=readme-ov-file][Emacs]] e uma para [[https://github.com/neovim/libvterm?tab=readme-ov-file][NeoVim]].
+Para usuários de [[https://www.debian.org/][Debian]] (ou derivados) todas as depedências podem ser obtidas via gereciador de pacotes apt. Após instalar as depedências lembre de modificar no código abaixo para usar seu interpretador de conmandos favorito.
+
+#+begin_src emacs-lisp
+(use-package vterm
+  :config
+  (setq shell-file-name "/usr/bin/zsh"
+        vterm-max-scrollback 5000))
+#+end_src
+
 
 ** Rainbow Mode
 #+begin_src emacs-lisp
