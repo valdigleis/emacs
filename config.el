@@ -111,25 +111,41 @@
   (let ((default-directory "~/.config/emacs/"))
     (call-interactively 'find-file)))
 
+(defun dk4ll/emacs-right-terminal ()
+  (interactive)
+  (split-window-right)
+  (other-window 1)
+  (vterm))
+
+(defun dk4ll/close-terminal ()
+  (interactive)
+  (when (string= (buffer-name) "*vterm*")
+    (kill-buffer))
+  (delete-window)
+  (other-window -1))
+
+(global-set-key (kbd "C-c t o") 'dk4ll/emacs-right-terminal)
+(global-set-key (kbd "C-c t c") 'dk4ll/close-terminal)
+
 ;  (use-package keycast
 ;    :config
 ;    (add-to-list 'global-mode-string '("" keycast-mode-line-mode ""))
 ;    (keycast-mode-line-mode))
 
-(use-package evil
-  :init
-  (setq evil-want-integration t
-        evil-want-keybinding nil
-        evil-vsplit-window-right t
-        evil-split-window-below t
-        evil-undo-system 'undo-redo)
-  (evil-mode))
+;; (use-package evil
+;;   :init
+;;   (setq evil-want-integration t
+;;         evil-want-keybinding nil
+;;         evil-vsplit-window-right t
+;;         evil-split-window-below t
+;;         evil-undo-system 'undo-redo)
+;;   (evil-mode))
 
-(use-package evil-collection
-  :after evil
-  :config
-  (add-to-list 'evil-collection-mode-list 'help)
-  (evil-collection-init))
+;; (use-package evil-collection
+;;   :after evil
+;;   :config
+;;   (add-to-list 'evil-collection-mode-list 'help)
+;;   (evil-collection-init))
 
 (use-package vertico
   :bind (:map vertico-map
@@ -181,6 +197,13 @@
   (load-theme 'doom-oceanic-next t)
   (doom-themes-org-config))
 
+;(use-package nano-theme
+;  :defer t
+;  :quelpa (nano-theme
+;           :fetcher github
+;           :repo "rougier/nano-theme"))
+;(nano-light)
+
 (use-package doom-modeline
   :hook
   (after-init . doom-modeline-mode)
@@ -189,6 +212,23 @@
   (set-face-attribute 'mode-line nil :font "FiraMono Nerd Font Mono" :height 110)
   (set-face-attribute 'mode-line-inactive nil :font "FiraMono Nerd Font Mono" :height 110)
   (setq doom-modeline-enable-word-count t))
+
+;(use-package nano-modeline
+;  :custom
+;  (add-hook 'prog-mode-hook            #'nano-modeline-prog-mode)
+;  (add-hook 'text-mode-hook            #'nano-modeline-text-mode)
+;  (add-hook 'org-mode-hook             #'nano-modeline-org-mode)
+;  (add-hook 'pdf-view-mode-hook        #'nano-modeline-pdf-mode)
+;  (add-hook 'mu4e-headers-mode-hook    #'nano-modeline-mu4e-headers-mode)
+;  (add-hook 'mu4e-view-mode-hook       #'nano-modeline-mu4e-message-mode)
+;  (add-hook 'elfeed-show-mode-hook     #'nano-modeline-elfeed-entry-mode)
+;  (add-hook 'elfeed-search-mode-hook   #'nano-modeline-elfeed-search-mode)
+;  (add-hook 'term-mode-hook            #'nano-modeline-term-mode)
+;  (add-hook 'xwidget-webkit-mode-hook  #'nano-modeline-xwidget-mode)
+;  (add-hook 'messages-buffer-mode-hook #'nano-modeline-message-mode)
+;  (add-hook 'org-capture-mode-hook     #'nano-modeline-org-capture-mode)
+;  (add-hook 'org-agenda-mode-hook      #'nano-modeline-org-agenda-mode))
+;(nano-modeline-text-mode t)
 
 (use-package diminish)
 
@@ -213,20 +253,65 @@
   :diminish
   :hook (company-mode . company-box-mode))
 
-(use-package treemacs-all-the-icons)
+(use-package treemacs-nerd-icons
+  :config
+  (treemacs-load-theme "nerd-icons"))
 
 (use-package treemacs
   :bind
   (:map global-map
-        ("M-\\" . treemacs))
+        ("C-c f" . treemacs))
   :config
-  (setq treemacs-no-png-images nil
-        treemacs-is-never-other-window nil))
+  (setq treemacs-no-png-images t
+        treemacs-is-never-other-window nil
+        treemacs-show-hidden-files t
+        treemacs-git-mode 'deferred))
 
-(use-package vterm
+(require 'treemacs-nerd-icons)
+(treemacs-load-theme "nerd-icons")
+
+;(use-package neotree
+;  :bind
+;  (:map global-map
+;        ("C-c t" . neotree-toggle)))
+
+(use-package vterm  
   :config
   (setq shell-file-name "/usr/bin/zsh"
         vterm-max-scrollback 5000))
+
+;; (use-package general
+;;   :config
+;;   (general-evil-setup)
+;;   (general-create-definer dk4ll/leader-keys
+;;     :states '(normal insert visual emacs)
+;;     :keymaps 'override
+;;     :prefix "SPC"
+;;     :global-prefix "M-SPC")
+;;    (dk4ll/leader-keys
+;;      "b" '(:ignore t :wk "Buffers/Bookmarks")
+;;      "b s" '(switch-to-buffer :wk "Switch to buffer")
+;;      "b i" '(ibuffer :wk "Ibuffer")
+;;      "b k" '(kill-current-buffer :wk "Kill current buffer")
+;;      "b w" '(basic-save-buffer :wk "Save buffer")
+;;      "b l" '(list-bookmarks :wk "List bookmarks")
+;;      "b m" '(bookmark-set :wk "Set bookmark")
+;;      "b q" '(save-buffers-kill-terminal :wk "Quit emacs"))
+;;    (dk4ll/leader-keys
+;;      "c"   '(:ignore t :wk "Codes commands")     
+;;      "c TAB" '(comment-line :wk "Comment lines"))
+;;    (dk4ll/leader-keys
+;;      "e" '(:ignore t :wk "File explorer")
+;;      "e o" '(treemacs :wk "Open file explorer"))
+;;    (dk4ll/leader-keys
+;;      "f" '(:ignore t :wk "Files")
+;;      "f f" '(find-file :wk "Find file"))
+;;    (dk4ll/leader-keys
+;;      "s" '(:ignore t :wk "Emacs...")
+;;      "s c" '(dk4ll/open-emacs-config :wk "Open emacs config.org")
+;;      "s p" '(dk4ll/emacs-personal-files :wk "Open personal Emacs config folder")
+;;      "s r" '(dk4ll/reaload-settings :wk "Reload Emacs settings"))
+;; )
 
 (use-package rainbow-mode
 :diminish
