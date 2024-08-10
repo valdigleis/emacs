@@ -12,7 +12,7 @@
   (expand-file-name "config.org" user-emacs-directory))
 #+end_example
 
-**Atenção:**  IA instalação do zsh permite tira o maior proveito desta configuração, a instalação pode ser feita (no Debian) usando o comando =sudo apt install zsh=
+*Atenção*: Essa instalação do zsh permite tira o maior proveito desta configuração, a instalação pode ser feita (no Debian) usando o comando =sudo apt install zsh=
    
 * Configurações Básicas
 ** Desabilitar tela de boas-vindas e ativas o scratch
