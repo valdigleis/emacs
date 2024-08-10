@@ -206,7 +206,7 @@
 #+end_src
     
 * Configuração para gestão de pacotes
-1. Inicialização (conexão) com os repostiórios de pacotes
+Inicialização (conexão) com os repostiórios de pacotes e realiza a configuração do Helper de gerenciamento "use-package"
 #+begin_src emacs-lisp
 (require 'package)
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
@@ -214,10 +214,7 @@
                           ("gnu" . "https://elpa.gnu.org/packages/")))
 (package-initialize)
 (unless package-archive-contents
-  (package-refresh-contents)) 
-#+end_src
-2. Configuração do Helper de gerenciamento "use-package"
-#+begin_src emacs-lisp
+  (package-refresh-contents))
 (unless (package-installed-p 'use-package)
    (package-install 'use-package))
 (require 'use-package)
