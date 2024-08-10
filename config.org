@@ -216,7 +216,6 @@
 (unless package-archive-contents
   (package-refresh-contents)) 
 #+end_src
-
 2. Configuração do Helper de gerenciamento "use-package"
 #+begin_src emacs-lisp
 (unless (package-installed-p 'use-package)
