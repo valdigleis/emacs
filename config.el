@@ -97,7 +97,7 @@
 (require 'use-package)
 (setq use-package-always-ensure t)
 
-(defun dk4ll/reaload-settings ()
+(defun dk4ll/reaload-emacs-settings ()
   (interactive)
   (load-file "~/.config/emacs/init.el"))
 
@@ -105,7 +105,7 @@
   (interactive)
   (find-file "~/.config/emacs/config.org"))
 
-(defun dk4ll/emacs-personal-files ()
+(defun dk4ll/emacs-personal-folder ()
   (interactive)
   (let ((default-directory "~/.config/emacs/"))
     (call-interactively 'find-file)))
@@ -116,7 +116,7 @@
   (other-window 1)
   (vterm))
 
-(defun dk4ll/close-terminal ()
+(defun dk4ll/emacs-terminal-close ()
   (interactive)
   (when (string= (buffer-name) "*vterm*")
     (kill-buffer))
@@ -124,34 +124,14 @@
   (other-window -1))
 
 (global-set-key (kbd "C-c t o") 'dk4ll/emacs-right-terminal)
-(global-set-key (kbd "C-c t c") 'dk4ll/close-terminal)
-
-;  (use-package keycast
-;    :config
-;    (add-to-list 'global-mode-string '("" keycast-mode-line-mode ""))
-;    (keycast-mode-line-mode))
-
-;; (use-package evil
-;;   :init
-;;   (setq evil-want-integration t
-;;         evil-want-keybinding nil
-;;         evil-vsplit-window-right t
-;;         evil-split-window-below t
-;;         evil-undo-system 'undo-redo)
-;;   (evil-mode))
-
-;; (use-package evil-collection
-;;   :after evil
-;;   :config
-;;   (add-to-list 'evil-collection-mode-list 'help)
-;;   (evil-collection-init))
+(global-set-key (kbd "C-c t c") 'dk4ll/emacs-terminal-close)
 
 (use-package vertico
   :bind (:map vertico-map
               ("C-i" . vertico-previous)
               ("C-o" . vertico-next)
               ("C-e" . vertico-exit)
-              :map minibuffer-local-map
+         :map minibuffer-local-map
               ("M-h" . backward-kill-word))
   :custom
   (vertico-cycle t)
@@ -269,48 +249,20 @@
 (require 'treemacs-nerd-icons)
 (treemacs-load-theme "nerd-icons")
 
-;(use-package neotree
-;  :bind
-;  (:map global-map
-;        ("C-c t" . neotree-toggle)))
-
 (use-package vterm  
   :config
   (setq shell-file-name "/usr/bin/zsh"
         vterm-max-scrollback 5000))
 
-;; (use-package general
-;;   :config
-;;   (general-evil-setup)
-;;   (general-create-definer dk4ll/leader-keys
-;;     :states '(normal insert visual emacs)
-;;     :keymaps 'override
-;;     :prefix "SPC"
-;;     :global-prefix "M-SPC")
-;;    (dk4ll/leader-keys
-;;      "b" '(:ignore t :wk "Buffers/Bookmarks")
-;;      "b s" '(switch-to-buffer :wk "Switch to buffer")
-;;      "b i" '(ibuffer :wk "Ibuffer")
-;;      "b k" '(kill-current-buffer :wk "Kill current buffer")
-;;      "b w" '(basic-save-buffer :wk "Save buffer")
-;;      "b l" '(list-bookmarks :wk "List bookmarks")
-;;      "b m" '(bookmark-set :wk "Set bookmark")
-;;      "b q" '(save-buffers-kill-terminal :wk "Quit emacs"))
-;;    (dk4ll/leader-keys
-;;      "c"   '(:ignore t :wk "Codes commands")     
-;;      "c TAB" '(comment-line :wk "Comment lines"))
-;;    (dk4ll/leader-keys
-;;      "e" '(:ignore t :wk "File explorer")
-;;      "e o" '(treemacs :wk "Open file explorer"))
-;;    (dk4ll/leader-keys
-;;      "f" '(:ignore t :wk "Files")
-;;      "f f" '(find-file :wk "Find file"))
-;;    (dk4ll/leader-keys
-;;      "s" '(:ignore t :wk "Emacs...")
-;;      "s c" '(dk4ll/open-emacs-config :wk "Open emacs config.org")
-;;      "s p" '(dk4ll/emacs-personal-files :wk "Open personal Emacs config folder")
-;;      "s r" '(dk4ll/reaload-settings :wk "Reload Emacs settings"))
-;; )
+(use-package flycheck
+  :hook (prog-mode-hook . flycheck-mode))
+
+(use-package projectile
+  :diminish projectile-mode
+  :config
+  (projectile-mode))
+
+(use-package magit)
 
 (use-package rainbow-mode
 :diminish
@@ -341,3 +293,13 @@
   :custom
   (org-bullets-bullet-list '("" "" "◆" "◇" "▪" "▪" "▪")))
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+
+(use-package markdown-mode
+  :commands (markdown-mode gfm-mode)
+  :mode (("README\\.md\\'" . gfm-mode)
+         ("\\.md\\'" . gfm-mode)
+         ("\\.markdown\\'" . markdown-mode))
+  :init (setq markdown-command "pandoc"))
+
+(use-package web-mode
+  :mode ("\\.phtml\\.tpl\\.html\\.twig\\.html?\\'" . web-mode))

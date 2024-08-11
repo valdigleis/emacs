@@ -13,7 +13,7 @@
 #+end_example
 
 *Atenção*: Essa instalação do zsh permite tira o maior proveito desta configuração, a instalação pode ser feita (no Debian) usando o comando =sudo apt install zsh=
-   
+
 * Configurações Básicas
 ** Desabilitar tela de boas-vindas e ativas o scratch
 #+begin_src emacs-lisp
@@ -226,7 +226,7 @@ Inicialização (conexão) com os repostiórios de pacotes e realiza a configura
 Aqui são definidas funções elisp!
 ** Funcão de recarga as configurações do Emacs
 #+begin_src emacs-lisp
-(defun dk4ll/reaload-settings ()
+(defun dk4ll/reaload-emacs-settings ()
   (interactive)
   (load-file "~/.config/emacs/init.el")) 
 #+end_src
@@ -240,7 +240,7 @@ Aqui são definidas funções elisp!
 
 ** Funcão para abrir o diretório de configurações pessoais
 #+begin_src emacs-lisp
-(defun dk4ll/emacs-personal-files ()
+(defun dk4ll/emacs-personal-folder ()
   (interactive)
   (let ((default-directory "~/.config/emacs/"))
     (call-interactively 'find-file)))
@@ -257,7 +257,7 @@ Aqui são definidas funções elisp!
 
 ** Função para fechar o terminal e voltar a janela anterior
 #+begin_src emacs-lisp
-(defun dk4ll/close-terminal ()
+(defun dk4ll/emacs-terminal-close ()
   (interactive)
   (when (string= (buffer-name) "*vterm*")
     (kill-buffer))
@@ -268,38 +268,10 @@ Aqui são definidas funções elisp!
 * Atalhos para as funções definidas
 #+begin_src emacs-lisp
 (global-set-key (kbd "C-c t o") 'dk4ll/emacs-right-terminal)
-(global-set-key (kbd "C-c t c") 'dk4ll/close-terminal)
+(global-set-key (kbd "C-c t c") 'dk4ll/emacs-terminal-close)
 #+end_src
 
-* Instalação dos Pacotes
-** Keycast
-Habilita no modeline a exibição das teclas acionadas.
-#+begin_src emacs-lisp
-;  (use-package keycast
-;    :config
-;    (add-to-list 'global-mode-string '("" keycast-mode-line-mode ""))
-;    (keycast-mode-line-mode))
-#+end_src
-
-** Evilmode
-O lado negro da edição, habilita um emulador de Vim para o Emacs.
-#+begin_src emacs-lisp
-;; (use-package evil
-;;   :init
-;;   (setq evil-want-integration t
-;;         evil-want-keybinding nil
-;;         evil-vsplit-window-right t
-;;         evil-split-window-below t
-;;         evil-undo-system 'undo-redo)
-;;   (evil-mode))
-
-;; (use-package evil-collection
-;;   :after evil
-;;   :config
-;;   (add-to-list 'evil-collection-mode-list 'help)
-;;   (evil-collection-init))
-#+end_src
-
+* Instalação dos Pacotes Para funcionalidades
 ** Vertico
 Incrementa o menu de buscas padrão do Emacs.
 #+begin_src emacs-lisp
@@ -308,7 +280,7 @@ Incrementa o menu de buscas padrão do Emacs.
               ("C-i" . vertico-previous)
               ("C-o" . vertico-next)
               ("C-e" . vertico-exit)
-              :map minibuffer-local-map
+         :map minibuffer-local-map
               ("M-h" . backward-kill-word))
   :custom
   (vertico-cycle t)
@@ -476,15 +448,6 @@ Disponibiliza ferramenta lateral do tipo explore files na visão hierárquica de
 
 #+end_src
 
-** Emacs-neotree
-Disponibiliza ferramenta lateral do tipo explore files na visão hierárquica de árvore.
-#+begin_src emacs-lisp
-;(use-package neotree
-;  :bind
-;  (:map global-map
-;        ("C-c t" . neotree-toggle)))
-#+end_src
-
 ** Vterm
 Habilita um terminal interno no Emacs, porém, em sistemas baseados em Debian (e talvez outros Unix-like) são necessários as seguintes depedências:
 1. [[https://cmake.org/][CMAKE]].
@@ -499,41 +462,26 @@ Para usuários de [[https://www.debian.org/][Debian]] (ou derivados) todas as de
         vterm-max-scrollback 5000))
 #+end_src
 
-** General
-Habilita a gestão simplificada de criação de atalhos.
+** Flycheck
+Para a verificação de sintaxe, linters e etc. Trabalha junto com os servidores de linguagens.
 #+begin_src emacs-lisp
-;; (use-package general
-;;   :config
-;;   (general-evil-setup)
-;;   (general-create-definer dk4ll/leader-keys
-;;     :states '(normal insert visual emacs)
-;;     :keymaps 'override
-;;     :prefix "SPC"
-;;     :global-prefix "M-SPC")
-;;    (dk4ll/leader-keys
-;;      "b" '(:ignore t :wk "Buffers/Bookmarks")
-;;      "b s" '(switch-to-buffer :wk "Switch to buffer")
-;;      "b i" '(ibuffer :wk "Ibuffer")
-;;      "b k" '(kill-current-buffer :wk "Kill current buffer")
-;;      "b w" '(basic-save-buffer :wk "Save buffer")
-;;      "b l" '(list-bookmarks :wk "List bookmarks")
-;;      "b m" '(bookmark-set :wk "Set bookmark")
-;;      "b q" '(save-buffers-kill-terminal :wk "Quit emacs"))
-;;    (dk4ll/leader-keys
-;;      "c"   '(:ignore t :wk "Codes commands")     
-;;      "c TAB" '(comment-line :wk "Comment lines"))
-;;    (dk4ll/leader-keys
-;;      "e" '(:ignore t :wk "File explorer")
-;;      "e o" '(treemacs :wk "Open file explorer"))
-;;    (dk4ll/leader-keys
-;;      "f" '(:ignore t :wk "Files")
-;;      "f f" '(find-file :wk "Find file"))
-;;    (dk4ll/leader-keys
-;;      "s" '(:ignore t :wk "Emacs...")
-;;      "s c" '(dk4ll/open-emacs-config :wk "Open emacs config.org")
-;;      "s p" '(dk4ll/emacs-personal-files :wk "Open personal Emacs config folder")
-;;      "s r" '(dk4ll/reaload-settings :wk "Reload Emacs settings"))
-;; )
+(use-package flycheck
+  :hook (prog-mode-hook . flycheck-mode))
+#+end_src
+
+** Projectile
+Para o gerenciamento de projetos, isto é, gerencia o caminho dos projetos!
+#+begin_src emacs-lisp
+(use-package projectile
+  :diminish projectile-mode
+  :config
+  (projectile-mode))
+#+end_src
+
+** Magit
+Para gerenciamento e uso do [[https://git-scm.com/][Git]] embarcado no Emacs.
+#+begin_src emacs-lisp
+(use-package magit)
 #+end_src
 
 ** Rainbow Mode
@@ -593,5 +541,25 @@ Habilita a gestão simplificada de criação de atalhos.
   (org-bullets-bullet-list '("" "" "◆" "◇" "▪" "▪" "▪")))
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 #+end_src
+
+* Configuração de linguagens e Servidores de Linguagens
+** Markdown 
+Para utilização do markdown-mode do Emacs é necessário que você possua instalado em seu sistema o [[https://pandoc.org/][pandoc]], e o mesmo deve estar liberado para uso com o comando =pandoc=, se você usa algum outro alias para o pandoc no seu sistema você deverá modificar o código abaixo.
+#+begin_src emacs-lisp
+(use-package markdown-mode
+  :commands (markdown-mode gfm-mode)
+  :mode (("README\\.md\\'" . gfm-mode)
+         ("\\.md\\'" . gfm-mode)
+         ("\\.markdown\\'" . markdown-mode))
+  :init (setq markdown-command "pandoc"))
+#+end_src
+
+** Linguagem HTML
+Para ativar o modo HTML do Emacs.
+#+begin_src emacs-lisp
+(use-package web-mode
+  :mode ("\\.phtml\\.tpl\\.html\\.twig\\.html?\\'" . web-mode))
+#+end_src
+
 
 
