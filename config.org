@@ -206,6 +206,11 @@
 (load custom-file 'noerror 'nomessage)
 #+end_src
     
+** Não cria arquivos de bloqueio
+#+begin_src emacs-lisp
+(setq create-lockfiles nil)
+#+end_src
+
 * Configuração para gestão de pacotes
 Inicialização (conexão) com os repostiórios de pacotes e realiza a configuração do Helper de gerenciamento "use-package"
 #+begin_src emacs-lisp
@@ -544,7 +549,7 @@ Para gerenciamento e uso do [[https://git-scm.com/][Git]] embarcado no Emacs.
 
 * Configuração de linguagens e Servidores de Linguagens
 ** Markdown 
-Para utilização do markdown-mode do Emacs é necessário que você possua instalado em seu sistema o [[https://pandoc.org/][pandoc]], e o mesmo deve estar liberado para uso com o comando =pandoc=, se você usa algum outro alias para o pandoc no seu sistema você deverá modificar o código abaixo.
+Para utilização do markdown-mode do Emacs é necessário que você possua instalado em seu sistema o [[https://pandoc.org/][pandoc]], e o mesmo deve estar liberado para uso com o comando =pandoc=, se você usa algum outro alias para o pandoc no seu sistema, então você deverá modificar o código abaixo.
 #+begin_src emacs-lisp
 (use-package markdown-mode
   :commands (markdown-mode gfm-mode)
