@@ -80,10 +80,14 @@
 
 (add-to-list 'default-frame-alist '(alpha-background . 90))
 
+(setq initial-scratch-message ";; ---------------------------------------------\n;; Autor:\n;; Data: \n;; ---------------------------------------------\n")
+
 (setq backup-directory-alist '((".*" . "~/.local/share/Trash/files")))
 
 (setq custom-file (locate-user-emacs-file "custom.el"))
 (load custom-file 'noerror 'nomessage)
+
+(setq create-lockfiles nil)
 
 (require 'package)
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
@@ -295,11 +299,60 @@
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 
 (use-package markdown-mode
-  :commands (markdown-mode gfm-mode)
-  :mode (("README\\.md\\'" . gfm-mode)
-         ("\\.md\\'" . gfm-mode)
-         ("\\.markdown\\'" . markdown-mode))
-  :init (setq markdown-command "pandoc"))
+  :mode "\\.md\\'"
+  :config
+  (setq markdown-command "pandoc")
+  (setq markdown-asymmetric-header t)
+  (setq markdown-header-scaling t)
+  (setq markdown-enable-math t))
+
+(use-package markdown-preview-mode
+  :commands markdown-preview)
 
 (use-package web-mode
-  :mode ("\\.phtml\\.tpl\\.html\\.twig\\.html?\\'" . web-mode))
+  :mode 
+  (("\\.html?\\'" . web-mode)
+   ("\\.phtml\\'" . web-mode)
+   ("\\.php\\'" . web-mode)
+   ("\\.tpl\\'" . web-mode)
+   ("\\.[agj]sp\\'" . web-mode)
+   ("\\.as[cp]x\\'" . web-mode)
+   ("\\.erb\\'" . web-mode)
+   ("\\.mustache\\'" . web-mode)
+   ("\\.djhtml\\'" . web-mode))
+  :config
+  (setq web-mode-enable-css-colorization t)
+  (setq web-mode-enable-auto-pairing t)
+  (setq web-mode-enable-comment-keywords t)
+  (setq web-mode-enable-current-element-highlight t)
+  (setq web-mode-markup-indent-offset 2)
+  (setq web-mode-css-indent-offset 2)
+  (setq web-mode-code-indent-offset 2))
+
+(use-package php-mode
+  :mode "\\.php\\'"
+  :config
+  (add-hook 'php-mode-hook
+            (lambda ()
+              (set (make-local-variable 'company-backends)
+                   '((company-php company-files))))
+            (setq php-manual-path "/usr/share/doc/php-doc/manual")
+            (setq php-manual-url "http://www.php.net/manual/en/")))
+
+(use-package flycheck
+  :init (global-flycheck-mode))
+
+(use-package lsp-mode
+  :hook ((web-mode . lsp)
+         (php-mode . lsp)
+	     (c-mode .lsp)
+	     (c++-mode . lsp))
+  :commands lsp
+  :config
+  (setq lsp-clients-clangd-executable "/usr/bin/clangd") 
+  (setq lsp-completion-provider :capf))
+
+(use-package lsp-ui
+  :commands lsp-ui-mode
+  :after lsp-mode
+  :hook (lsp-mode . lsp-ui-mode))

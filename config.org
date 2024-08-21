@@ -194,6 +194,11 @@
 (add-to-list 'default-frame-alist '(alpha-background . 90))
 #+end_src
 
+** Configura a mensagem no scratch buffer
+#+begin_src emacs-lisp
+(setq initial-scratch-message ";; ---------------------------------------------\n;; Autor:\n;; Data: \n;; ---------------------------------------------\n")
+#+end_src
+
 * Configuração de Backups, custom e fontes
 ** Define o diretório padrão para backups
 #+begin_src emacs-lisp
@@ -547,24 +552,87 @@ Para gerenciamento e uso do [[https://git-scm.com/][Git]] embarcado no Emacs.
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 #+end_src
 
-* Configuração de linguagens e Servidores de Linguagens
+* Suporte para as linguagens
 ** Markdown 
 Para utilização do markdown-mode do Emacs é necessário que você possua instalado em seu sistema o [[https://pandoc.org/][pandoc]], e o mesmo deve estar liberado para uso com o comando =pandoc=, se você usa algum outro alias para o pandoc no seu sistema, então você deverá modificar o código abaixo.
 #+begin_src emacs-lisp
 (use-package markdown-mode
-  :commands (markdown-mode gfm-mode)
-  :mode (("README\\.md\\'" . gfm-mode)
-         ("\\.md\\'" . gfm-mode)
-         ("\\.markdown\\'" . markdown-mode))
-  :init (setq markdown-command "pandoc"))
+  :mode "\\.md\\'"
+  :config
+  (setq markdown-command "pandoc")
+  (setq markdown-asymmetric-header t)
+  (setq markdown-header-scaling t)
+  (setq markdown-enable-math t))
 #+end_src
 
-** Linguagem HTML
+Ativa a disponibilidade para a função de pré-visualização dos arquivos markdown
+#+begin_src emacs-lisp
+(use-package markdown-preview-mode
+  :commands markdown-preview)
+#+end_src
+
+** Linguagem para Web (HTML +  CSS)
 Para ativar o modo HTML do Emacs.
 #+begin_src emacs-lisp
 (use-package web-mode
-  :mode ("\\.phtml\\.tpl\\.html\\.twig\\.html?\\'" . web-mode))
+  :mode 
+  (("\\.html?\\'" . web-mode)
+   ("\\.phtml\\'" . web-mode)
+   ("\\.php\\'" . web-mode)
+   ("\\.tpl\\'" . web-mode)
+   ("\\.[agj]sp\\'" . web-mode)
+   ("\\.as[cp]x\\'" . web-mode)
+   ("\\.erb\\'" . web-mode)
+   ("\\.mustache\\'" . web-mode)
+   ("\\.djhtml\\'" . web-mode))
+  :config
+  (setq web-mode-enable-css-colorization t)
+  (setq web-mode-enable-auto-pairing t)
+  (setq web-mode-enable-comment-keywords t)
+  (setq web-mode-enable-current-element-highlight t)
+  (setq web-mode-markup-indent-offset 2)
+  (setq web-mode-css-indent-offset 2)
+  (setq web-mode-code-indent-offset 2))
 #+end_src
 
+** Linguagem PHP
+#+begin_src emacs-lisp
+(use-package php-mode
+  :mode "\\.php\\'"
+  :config
+  (add-hook 'php-mode-hook
+            (lambda ()
+              (set (make-local-variable 'company-backends)
+                   '((company-php company-files))))
+            (setq php-manual-path "/usr/share/doc/php-doc/manual")
+            (setq php-manual-url "http://www.php.net/manual/en/")))
+#+end_src
 
+* Configuração para verificação de sintaxe e servidores de linguagens
+** Verificação de sintaxe com flycheck
+#+begin_src emacs-lisp
+(use-package flycheck
+  :init (global-flycheck-mode))
+#+end_src
 
+** LSP Mode
+Atualmente está configurado para as linguagens HTML, CSS, PHP, C e C++, porém, no caso de C/C++ é necessário instalar o [[https://clangd.llvm.org/][clangd]] esteja instalado no seu sistema.
+#+begin_src emacs-lisp
+(use-package lsp-mode
+  :hook ((web-mode . lsp)
+         (php-mode . lsp)
+	     (c-mode .lsp)
+	     (c++-mode . lsp))
+  :commands lsp
+  :config
+  (setq lsp-clients-clangd-executable "/usr/bin/clangd") 
+  (setq lsp-completion-provider :capf))
+#+end_src 
+
+** LSP UI
+#+begin_src emacs-lisp
+(use-package lsp-ui
+  :commands lsp-ui-mode
+  :after lsp-mode
+  :hook (lsp-mode . lsp-ui-mode))
+#+end_src 
