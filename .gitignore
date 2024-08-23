@@ -5,6 +5,8 @@
 /emacs-backup/
 .cache/
 transient/
+workspace/
+eclipse.jdt.ls/ 
 
 # Igonora os arquivos
 history
