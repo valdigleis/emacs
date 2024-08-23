@@ -5,6 +5,7 @@
 (delete-selection-mode t)
 
 (setq make-backup-files nil)
+(setq auto-save-default nil)
 
 (save-place-mode 1)
 
@@ -309,52 +310,13 @@
 (use-package markdown-preview-mode
   :commands markdown-preview)
 
-(use-package web-mode
-  :mode 
-  (("\\.html?\\'" . web-mode)
-   ("\\.phtml\\'" . web-mode)
-   ("\\.php\\'" . web-mode)
-   ("\\.tpl\\'" . web-mode)
-   ("\\.[agj]sp\\'" . web-mode)
-   ("\\.as[cp]x\\'" . web-mode)
-   ("\\.erb\\'" . web-mode)
-   ("\\.mustache\\'" . web-mode)
-   ("\\.djhtml\\'" . web-mode))
-  :config
-  (setq web-mode-extra-auto-pairs
-      '(("erb"  . (("beg" "end")))
-        ("php"  . (("beg" "end")
-                   ("beg" "end")))
-       ))
-  (setq web-mode-enable-css-colorization t)
-  (setq web-mode-enable-auto-pairing t)
-  (setq web-mode-enable-comment-keywords t)
-  (setq web-mode-enable-current-element-highlight t)
-  (setq web-mode-markup-indent-offset 2)
-  (setq web-mode-css-indent-offset 2)
-  (setq web-mode-code-indent-offset 2)
-  (setq web-mode-style-padding 1)
-  (setq web-mode-script-padding 1)
-  (setq web-mode-block-padding 0)
-  (setq web-mode-comment-style 2))
-
-(use-package php-mode
-  :mode "\\.php\\'"
-  :config
-  (add-hook 'php-mode-hook
-            (lambda ()
-              (set (make-local-variable 'company-backends)
-                   '((company-php company-files))))
-            (setq php-manual-path "/usr/share/doc/php-doc/manual")
-            (setq php-manual-url "http://www.php.net/manual/en/")))
+(use-package lsp-jedi)
 
 (use-package flycheck
   :init (global-flycheck-mode))
 
 (use-package lsp-mode
-  :hook ((web-mode . lsp)
-         (php-mode . lsp)
-	     (c-mode .lsp)
+  :hook ((c-mode . lsp)
 	     (c++-mode . lsp))
   :commands lsp
   :config
@@ -364,4 +326,6 @@
 (use-package lsp-ui
   :commands lsp-ui-mode
   :after lsp-mode
-  :hook (lsp-mode . lsp-ui-mode))
+  :hook (lsp-mode . lsp-ui-mode)
+  :config
+  (lsp-ui-doc-enable t))

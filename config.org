@@ -30,9 +30,10 @@
 (delete-selection-mode t)
 #+end_src
 
-** Desativar backups globalmente
+** Desativar backups e o atuosalve de arquivos globalmente
 #+begin_src emacs-lisp
 (setq make-backup-files nil)
+(setq auto-save-default nil)
 #+end_src
 
 ** Habilita o salvamento da posição do cursor ao sair
@@ -552,7 +553,7 @@ Para gerenciamento e uso do [[https://git-scm.com/][Git]] embarcado no Emacs.
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 #+end_src
 
-* Suporte para as linguagens
+* Suporte para as linguagens e suas ferramentas
 ** Markdown 
 Para utilização do markdown-mode do Emacs é necessário que você possua instalado em seu sistema o [[https://pandoc.org/][pandoc]], e o mesmo deve estar liberado para uso com o comando =pandoc=, se você usa algum outro alias para o pandoc no seu sistema, então você deverá modificar o código abaixo.
 #+begin_src emacs-lisp
@@ -571,53 +572,13 @@ Ativa a disponibilidade para a função de pré-visualização dos arquivos mark
   :commands markdown-preview)
 #+end_src
 
-** Linguagem para Web (HTML +  CSS)
-Para ativar o modo HTML do Emacs.
+** Python (Jedi-LSP)
+É necessário que o [[https://github.com/pappasam/jedi-language-server][Jedi-LSP]] esteja instalado no seu sistema, e disponível via PATH do sistema.
 #+begin_src emacs-lisp
-(use-package web-mode
-  :mode 
-  (("\\.html?\\'" . web-mode)
-   ("\\.phtml\\'" . web-mode)
-   ("\\.php\\'" . web-mode)
-   ("\\.tpl\\'" . web-mode)
-   ("\\.[agj]sp\\'" . web-mode)
-   ("\\.as[cp]x\\'" . web-mode)
-   ("\\.erb\\'" . web-mode)
-   ("\\.mustache\\'" . web-mode)
-   ("\\.djhtml\\'" . web-mode))
-  :config
-  (setq web-mode-extra-auto-pairs
-      '(("erb"  . (("beg" "end")))
-        ("php"  . (("beg" "end")
-                   ("beg" "end")))
-       ))
-  (setq web-mode-enable-css-colorization t)
-  (setq web-mode-enable-auto-pairing t)
-  (setq web-mode-enable-comment-keywords t)
-  (setq web-mode-enable-current-element-highlight t)
-  (setq web-mode-markup-indent-offset 2)
-  (setq web-mode-css-indent-offset 2)
-  (setq web-mode-code-indent-offset 2)
-  (setq web-mode-style-padding 1)
-  (setq web-mode-script-padding 1)
-  (setq web-mode-block-padding 0)
-  (setq web-mode-comment-style 2))
+(use-package lsp-jedi)
 #+end_src
 
-** Linguagem PHP
-#+begin_src emacs-lisp
-(use-package php-mode
-  :mode "\\.php\\'"
-  :config
-  (add-hook 'php-mode-hook
-            (lambda ()
-              (set (make-local-variable 'company-backends)
-                   '((company-php company-files))))
-            (setq php-manual-path "/usr/share/doc/php-doc/manual")
-            (setq php-manual-url "http://www.php.net/manual/en/")))
-#+end_src
-
-* Configuração para verificação de sintaxe e servidores de linguagens
+* Configuração para verificação de sintaxe e LSP-Mode
 ** Verificação de sintaxe com flycheck
 #+begin_src emacs-lisp
 (use-package flycheck
@@ -625,12 +586,10 @@ Para ativar o modo HTML do Emacs.
 #+end_src
 
 ** LSP Mode
-Atualmente está configurado para as linguagens HTML, CSS, PHP, C e C++, porém, no caso de C/C++ é necessário instalar o [[https://clangd.llvm.org/][clangd]] esteja instalado no seu sistema.
+Atualmente está configurado para as linguagens C/C++ (usando [[https://clangd.llvm.org/][clangd)]].
 #+begin_src emacs-lisp
 (use-package lsp-mode
-  :hook ((web-mode . lsp)
-         (php-mode . lsp)
-	     (c-mode .lsp)
+  :hook ((c-mode . lsp)
 	     (c++-mode . lsp))
   :commands lsp
   :config
@@ -643,5 +602,7 @@ Atualmente está configurado para as linguagens HTML, CSS, PHP, C e C++, porém,
 (use-package lsp-ui
   :commands lsp-ui-mode
   :after lsp-mode
-  :hook (lsp-mode . lsp-ui-mode))
+  :hook (lsp-mode . lsp-ui-mode)
+  :config
+  (lsp-ui-doc-enable t)) 
 #+end_src 
