@@ -276,6 +276,15 @@ Aqui são definidas funções elisp!
   (other-window -1))
 #+end_src
 
+** Função para aplicar uma rápida organização e formatação no Buffer usando LSP
+#+begin_src emacs-lisp
+(defun my-lsp-fix-buffer ()
+  "Formats buffer and organizes imports using LSP."
+  (interactive)
+  (lsp-organize-imports)
+  (lsp-format-buffer))
+#+end_src
+
 * Atalhos para as funções definidas
 #+begin_src emacs-lisp
 (global-set-key (kbd "C-c t o") 'dk4ll/emacs-right-terminal)
@@ -553,7 +562,7 @@ Para gerenciamento e uso do [[https://git-scm.com/][Git]] embarcado no Emacs.
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 #+end_src
 
-* Linguagens e LSP
+* Linguagens
 ** Markdown 
 Para utilização do markdown-mode do Emacs é necessário que você possua instalado em seu sistema o [[https://pandoc.org/][pandoc]], e o mesmo deve estar liberado para uso com o comando =pandoc=, se você usa algum outro alias para o pandoc no seu sistema, então você deverá modificar o código abaixo.
 #+begin_src emacs-lisp
@@ -572,36 +581,96 @@ Ativa a disponibilidade para a função de pré-visualização dos arquivos mark
   :commands markdown-preview)
 #+end_src
 
-** Python (Jedi-LSP)
-É necessário que o [[https://github.com/pappasam/jedi-language-server][Jedi-LSP]] esteja instalado no seu sistema, e disponível via PATH do sistema.
+** HTML/CSS
 #+begin_src emacs-lisp
-(use-package lsp-jedi)
+(use-package web-mode
+  :ensure t
+  :mode (("\\.html?\\'" . web-mode)
+         ("\\.phtml\\'" . web-mode)
+         ("\\.php\\'" . web-mode)
+         ("\\.css\\'" . web-mode))
+  :config
+  (setq web-mode-markup-indent-offset 2)
+  (setq web-mode-css-indent-offset 2)
+  (setq web-mode-code-indent-offset 2)
+  (setq web-mode-enable-css-colorization t)
+  (setq web-mode-enable-auto-pairing t)
+  (setq web-mode-enable-comment-keywords t)
+  (setq web-mode-enable-current-element-highlight t)
+  (setq web-mode-comment-style 2)
+  (setq web-mode-style-padding 1)
+  (setq web-mode-script-padding 1)
+  (setq web-mode-block-padding 0))
 #+end_src
 
-** Haskell
+** JSON
 #+begin_src emacs-lisp
-(use-package haskell-mode)
+(use-package json-mode)
 #+end_src
 
-* Configuração para verificação de sintaxe e LSP-Mode
+** Ocaml
+Para gerenciar todas as depedências do ambiente de Ocaml recomendo a instalação previa do [[https://opam.ocaml.org/][opam]] em seu sistema, de forma que o mesmo esteja disponível via PATH.
+#+begin_src emacs-lisp
+(use-package tuareg
+  :custom
+  (tuareg-opam-insinuate t)
+  :config)
+(use-package dune-format)
+(use-package reason-mode)
+#+end_src
+
+* Flycheck
 ** Verificação de sintaxe com flycheck
 #+begin_src emacs-lisp
 (use-package flycheck
   :init (global-flycheck-mode))
 #+end_src
 
+* LSP
+** Python
+É necessário que o [[https://github.com/pappasam/jedi-language-server][Jedi-LSP]] esteja instalado no seu sistema, e disponível via PATH do sistema.
+#+begin_src emacs-lisp
+(use-package lsp-jedi)
+#+end_src
+
+** Haskell
+É necessário que o GHCi e o [[https://github.com/haskell/haskell-language-server/][Haskell language server]] estejam instalados no seu sistema, e disponíveis via PATH do sistema, recomendo que seja feita a instalação via [[https://www.haskell.org/ghcup/][ghcup]].
+#+begin_src emacs-lisp
+(use-package lsp-haskell)
+#+end_src
+
+** Java
+É necessáro o [[https://openjdk.org/][OpenJDK]] e [[https://maven.apache.org/][maven]] estejam instalados no seu sistema, e disponíveis via PATH, o [[https://projects.eclipse.org/projects/eclipse.jdt.ls][JDT LS]] será instalado automaticamente pelo =lsp-java= na primeira execução do =java-mode= no Emacs.
+#+begin_src emacs-lisp
+(use-package lsp-java)
+#+end_src
+
 ** LSP Mode
-Atualmente está configurado para as linguagens C/C++ (usando [[https://clangd.llvm.org/][clangd)]].
+Atualmente está configurado para as linguagens: C/C++ (usando [[https://clangd.llvm.org/][clangd)]], Python (usando [[https://pypi.org/project/jedi-language-server/][Jedi]]), Haskell (usando [[https://github.com/haskell/haskell-language-server/][Haskell language server]]), HTML|CSS|JSON|Eslint (usando [[https://www.npmjs.com/package/vscode-langservers-extracted][vscode langservers extracted]]), Ocaml (usando [[https://github.com/ocaml/ocaml-lsp][ocaml-lsp]] e [[https://github.com/ocaml-ppx/ocamlformat][ocamlformat]]).
 #+begin_src emacs-lisp
 (use-package lsp-mode
-  :init
-  (setq lsp-keymap-prefix "C-c l")
+  :after flycheck
+  :commands lsp
+  :bind (("C-c l ," . flycheck-previous-error)
+         ("C-c l ." . flycheck-next-error)
+         ("C-c l d" . lsp-find-definition)
+         ("C-c l r" . lsp-find-references)
+         ("C-c l p" . lsp-describe-thing-at-point)
+         ("C-c l i" . lsp-find-implementation)
+         ("C-c l R" . lsp-rename)
+         ("C-c l f" . my-lsp-fix-buffer))
   :hook ((c-mode . lsp)
 	     (c++-mode . lsp)
-         (haskell-mode . lsp))
-  :commands lsp
+         (python-mode . lsp)
+         (haskell-mode . lsp)
+         (web-mode . lsp)
+         (java-mode . lsp)
+         (tuareg-mode . lsp)
+         (caml-mode . lsp)
+         (reason-mode . lsp)
+         (before-save . lsp-organize-imports))
   :config
-  (setq lsp-clients-clangd-executable "/usr/bin/clangd") 
+  (setq lsp-clients-clangd-executable "/usr/bin/clangd")
   (setq lsp-completion-provider :capf))
 #+end_src 
 

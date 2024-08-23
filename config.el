@@ -128,6 +128,12 @@
   (delete-window)
   (other-window -1))
 
+(defun my-lsp-fix-buffer ()
+  "Formats buffer and organizes imports using LSP."
+  (interactive)
+  (lsp-organize-imports)
+  (lsp-format-buffer))
+
 (global-set-key (kbd "C-c t o") 'dk4ll/emacs-right-terminal)
 (global-set-key (kbd "C-c t c") 'dk4ll/emacs-terminal-close)
 
@@ -310,17 +316,65 @@
 (use-package markdown-preview-mode
   :commands markdown-preview)
 
-(use-package lsp-jedi)
+(use-package web-mode
+  :ensure t
+  :mode (("\\.html?\\'" . web-mode)
+         ("\\.phtml\\'" . web-mode)
+         ("\\.php\\'" . web-mode)
+         ("\\.css\\'" . web-mode))
+  :config
+  (setq web-mode-markup-indent-offset 2)
+  (setq web-mode-css-indent-offset 2)
+  (setq web-mode-code-indent-offset 2)
+  (setq web-mode-enable-css-colorization t)
+  (setq web-mode-enable-auto-pairing t)
+  (setq web-mode-enable-comment-keywords t)
+  (setq web-mode-enable-current-element-highlight t)
+  (setq web-mode-comment-style 2)
+  (setq web-mode-style-padding 1)
+  (setq web-mode-script-padding 1)
+  (setq web-mode-block-padding 0))
+
+(use-package json-mode)
+
+(use-package tuareg
+  :custom
+  (tuareg-opam-insinuate t)
+  :config)
+(use-package dune-format)
+(use-package reason-mode)
 
 (use-package flycheck
   :init (global-flycheck-mode))
 
+(use-package lsp-jedi)
+
+(use-package lsp-haskell)
+
+(use-package lsp-java)
+
 (use-package lsp-mode
-  :hook ((c-mode . lsp)
-	     (c++-mode . lsp))
+  :after flycheck
   :commands lsp
+  :bind (("C-c l n" . flycheck-next-error)
+         ("C-c l d" . lsp-find-definition)
+         ("C-c l r" . lsp-find-references)
+         ("C-c l p" . lsp-describe-thing-at-point)
+         ("C-c l i" . lsp-find-implementation)
+         ("C-c l R" . lsp-rename)
+         ("C-c l f" . my-lsp-fix-buffer))
+  :hook ((c-mode . lsp)
+	     (c++-mode . lsp)
+         (python-mode . lsp)
+         (haskell-mode . lsp)
+         (web-mode . lsp)
+         (java-mode . lsp)
+         (tuareg-mode . lsp)
+         (caml-mode . lsp)
+         (reason-mode . lsp)
+         (before-save . lsp-organize-imports))
   :config
-  (setq lsp-clients-clangd-executable "/usr/bin/clangd") 
+  (setq lsp-clients-clangd-executable "/usr/bin/clangd")
   (setq lsp-completion-provider :capf))
 
 (use-package lsp-ui
