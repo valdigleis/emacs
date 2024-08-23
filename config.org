@@ -553,7 +553,7 @@ Para gerenciamento e uso do [[https://git-scm.com/][Git]] embarcado no Emacs.
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 #+end_src
 
-* Suporte para as linguagens e suas ferramentas
+* Linguagens e LSP
 ** Markdown 
 Para utilização do markdown-mode do Emacs é necessário que você possua instalado em seu sistema o [[https://pandoc.org/][pandoc]], e o mesmo deve estar liberado para uso com o comando =pandoc=, se você usa algum outro alias para o pandoc no seu sistema, então você deverá modificar o código abaixo.
 #+begin_src emacs-lisp
