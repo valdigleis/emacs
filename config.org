@@ -578,6 +578,11 @@ Ativa a disponibilidade para a função de pré-visualização dos arquivos mark
 (use-package lsp-jedi)
 #+end_src
 
+** Haskell
+#+begin_src emacs-lisp
+(use-package haskell-mode)
+#+end_src
+
 * Configuração para verificação de sintaxe e LSP-Mode
 ** Verificação de sintaxe com flycheck
 #+begin_src emacs-lisp
@@ -589,8 +594,11 @@ Ativa a disponibilidade para a função de pré-visualização dos arquivos mark
 Atualmente está configurado para as linguagens C/C++ (usando [[https://clangd.llvm.org/][clangd)]].
 #+begin_src emacs-lisp
 (use-package lsp-mode
+  :init
+  (setq lsp-keymap-prefix "C-c l")
   :hook ((c-mode . lsp)
-	     (c++-mode . lsp))
+	     (c++-mode . lsp)
+         (haskell-mode . lsp))
   :commands lsp
   :config
   (setq lsp-clients-clangd-executable "/usr/bin/clangd") 
