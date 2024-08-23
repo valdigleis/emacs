@@ -356,7 +356,8 @@
 (use-package lsp-mode
   :after flycheck
   :commands lsp
-  :bind (("C-c l n" . flycheck-next-error)
+  :bind (("C-c l ," . flycheck-previous-error)
+         ("C-c l ." . flycheck-next-error)
          ("C-c l d" . lsp-find-definition)
          ("C-c l r" . lsp-find-references)
          ("C-c l p" . lsp-describe-thing-at-point)

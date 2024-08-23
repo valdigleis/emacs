@@ -5,6 +5,7 @@
 /emacs-backup/
 .cache/
 transient/
+workspace/
 
 # Igonora os arquivos
 history
