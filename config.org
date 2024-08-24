@@ -562,7 +562,7 @@ Para gerenciamento e uso do [[https://git-scm.com/][Git]] embarcado no Emacs.
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 #+end_src
 
-* Linguagens
+* Suporte de Linguagens
 ** Markdown 
 Para utilização do markdown-mode do Emacs é necessário que você possua instalado em seu sistema o [[https://pandoc.org/][pandoc]], e o mesmo deve estar liberado para uso com o comando =pandoc=, se você usa algum outro alias para o pandoc no seu sistema, então você deverá modificar o código abaixo.
 #+begin_src emacs-lisp
@@ -640,13 +640,19 @@ Para gerenciar todas as depedências do ambiente de Ocaml recomendo a instalaç�
 #+end_src
 
 ** Java
-É necessáro o [[https://openjdk.org/][OpenJDK]] e [[https://maven.apache.org/][maven]] estejam instalados no seu sistema, e disponíveis via PATH, o [[https://projects.eclipse.org/projects/eclipse.jdt.ls][JDT LS]] será instalado automaticamente pelo =lsp-java= na primeira execução do =java-mode= no Emacs.
+É necessáro que o [[https://openjdk.org/][OpenJDK]] e o [[https://maven.apache.org/][maven]] estejam instalados no seu sistema, e disponíveis via PATH, o [[https://projects.eclipse.org/projects/eclipse.jdt.ls][JDT LS]] será instalado automaticamente pelo =lsp-java= na primeira execução do =java-mode= no Emacs.
 #+begin_src emacs-lisp
 (use-package lsp-java)
 #+end_src
 
+** LateX
+É necessário que o [[https://github.com/latex-lsp/texlab][texlab]] esteja instalado no seu sistema, e disponível via PATH.
+#+begin_src emacs-lisp
+(use-package lsp-latex)
+#+end_src
+
 ** LSP Mode
-Atualmente está configurado para as linguagens: C/C++ (usando [[https://clangd.llvm.org/][clangd)]], Python (usando [[https://pypi.org/project/jedi-language-server/][Jedi]]), Haskell (usando [[https://github.com/haskell/haskell-language-server/][Haskell language server]]), HTML|CSS|JSON|Eslint (usando [[https://www.npmjs.com/package/vscode-langservers-extracted][vscode langservers extracted]]), Ocaml (usando [[https://github.com/ocaml/ocaml-lsp][ocaml-lsp]] e [[https://github.com/ocaml-ppx/ocamlformat][ocamlformat]]).
+Atualmente está configurado para as linguagens: C/C++ (usando [[https://clangd.llvm.org/][clangd)]], Python (usando [[https://pypi.org/project/jedi-language-server/][Jedi]]), Haskell (usando [[https://github.com/haskell/haskell-language-server/][Haskell language server]]), HTML|CSS|JSON|Eslint (usando [[https://www.npmjs.com/package/vscode-langservers-extracted][vscode langservers extracted]]), Ocaml (usando [[https://github.com/ocaml/ocaml-lsp][ocaml-lsp]] e [[https://github.com/ocaml-ppx/ocamlformat][ocamlformat]]), LaTeX (usando [[https://github.com/latex-lsp/texlab][texlab]]).
 #+begin_src emacs-lisp
 (use-package lsp-mode
   :after flycheck
@@ -665,6 +671,8 @@ Atualmente está configurado para as linguagens: C/C++ (usando [[https://clangd.
          (haskell-mode . lsp)
          (web-mode . lsp)
          (java-mode . lsp)
+         (tex-mode . lsp)
+         (bibtex-mode . lsp)
          (tuareg-mode . lsp)
          (caml-mode . lsp)
          (reason-mode . lsp)

@@ -353,6 +353,8 @@
 
 (use-package lsp-java)
 
+(use-package lsp-latex)
+
 (use-package lsp-mode
   :after flycheck
   :commands lsp
@@ -370,6 +372,8 @@
          (haskell-mode . lsp)
          (web-mode . lsp)
          (java-mode . lsp)
+         (tex-mode . lsp)
+         (bibtex-mode . lsp)
          (tuareg-mode . lsp)
          (caml-mode . lsp)
          (reason-mode . lsp)
