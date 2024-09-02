@@ -511,6 +511,13 @@ Para gerenciamento e uso do [[https://git-scm.com/][Git]] embarcado no Emacs.
 :hook org-mode prog-mode)
 #+end_src
 
+** Undo-tree
+Pacote para exibir visualmente uma árvore de edição contendo todos os estados assumido pelo buffer, incluido os estados que sofreram undo.
+#+begin_src emacs-lisp
+(use-package undo-tree
+  :config (global-undo-tree-mode t))
+#+end_src
+
 * Configuração do Orgmode
 ** Ativar o orgmode
 #+begin_src emacs-lisp
@@ -619,6 +626,13 @@ Para gerenciar todas as depedências do ambiente de Ocaml recomendo a instalaç�
 (use-package reason-mode)
 #+end_src
 
+** Latex
+Habilita uma utilização suave e totalmente integral ao LaTeX.
+#+begin_src emacs-lisp
+(use-package auctex
+  :defer t)
+#+end_src
+
 * Flycheck
 ** Verificação de sintaxe com flycheck
 #+begin_src emacs-lisp
@@ -631,6 +645,7 @@ Para gerenciar todas as depedências do ambiente de Ocaml recomendo a instalaç�
 É necessário que o [[https://github.com/pappasam/jedi-language-server][Jedi-LSP]] esteja instalado no seu sistema, e disponível via PATH do sistema.
 #+begin_src emacs-lisp
 (use-package lsp-jedi)
+(setq python-indent-offset 2)
 #+end_src
 
 ** Haskell
@@ -649,6 +664,7 @@ Para gerenciar todas as depedências do ambiente de Ocaml recomendo a instalaç�
 É necessário que o [[https://github.com/latex-lsp/texlab][texlab]] esteja instalado no seu sistema, e disponível via PATH.
 #+begin_src emacs-lisp
 (use-package lsp-latex)
+(setq tex-indent-basic 2)
 #+end_src
 
 ** LSP Mode

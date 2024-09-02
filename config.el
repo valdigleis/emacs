@@ -279,6 +279,9 @@
 :diminish
 :hook org-mode prog-mode)
 
+(use-package undo-tree
+  :config (global-undo-tree-mode t))
+
 (require 'org)
 
 (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
@@ -344,16 +347,21 @@
 (use-package dune-format)
 (use-package reason-mode)
 
+(use-package auctex
+  :defer t)
+
 (use-package flycheck
   :init (global-flycheck-mode))
 
 (use-package lsp-jedi)
+(setq python-indent-offset 2)
 
 (use-package lsp-haskell)
 
 (use-package lsp-java)
 
 (use-package lsp-latex)
+(setq tex-indent-basic 2)
 
 (use-package lsp-mode
   :after flycheck
