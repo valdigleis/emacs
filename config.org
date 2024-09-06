@@ -667,6 +667,15 @@ Habilita uma utilização suave e totalmente integral ao LaTeX.
 (setq tex-indent-basic 2)
 #+end_src
 
+** Phpactor
+É necessário que o [[https://github.com/phpactor/phpactor][Phpactor]] esteja instalado no seu sistema, e disponível via PATH.
+#+begin_src emacs-lisp
+; (use-package php-mode)
+; (with-eval-after-load 'php-mode
+;   (custom-set-variables '(lsp-phpactor-path "~/.apps/phpactor/"))
+;   (add-hook 'php-mode-hook #'init-php-mode))
+#+end_src
+
 ** LSP Mode
 Atualmente está configurado para as linguagens: C/C++ (usando [[https://clangd.llvm.org/][clangd)]], Python (usando [[https://pypi.org/project/jedi-language-server/][Jedi]]), Haskell (usando [[https://github.com/haskell/haskell-language-server/][Haskell language server]]), HTML|CSS|JSON|Eslint (usando [[https://www.npmjs.com/package/vscode-langservers-extracted][vscode langservers extracted]]), Ocaml (usando [[https://github.com/ocaml/ocaml-lsp][ocaml-lsp]] e [[https://github.com/ocaml-ppx/ocamlformat][ocamlformat]]), LaTeX (usando [[https://github.com/latex-lsp/texlab][texlab]]).
 #+begin_src emacs-lisp
@@ -691,6 +700,7 @@ Atualmente está configurado para as linguagens: C/C++ (usando [[https://clangd.
          (bibtex-mode . lsp)
          (tuareg-mode . lsp)
          (caml-mode . lsp)
+         (php-mode . lsp)
          (reason-mode . lsp)
          (before-save . lsp-organize-imports))
   :config
