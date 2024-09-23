@@ -363,10 +363,10 @@
 (use-package lsp-latex)
 (setq tex-indent-basic 2)
 
-(use-package php-mode)
-(with-eval-after-load 'php-mode
-  (custom-set-variables '(lsp-phpactor-path "~/.apps/phpactor/"))
-  (add-hook 'php-mode-hook #'init-php-mode))
+; (use-package php-mode)
+; (with-eval-after-load 'php-mode
+;   (custom-set-variables '(lsp-phpactor-path "~/.apps/phpactor/"))
+;   (add-hook 'php-mode-hook #'init-php-mode))
 
 (use-package lsp-mode
   :after flycheck

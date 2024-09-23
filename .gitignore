@@ -8,6 +8,8 @@ transient/
 workspace/
 eclipse.jdt.ls/ 
 intelephense/
+lsp-cache/
+
 
 # Igonora os arquivos
 history
