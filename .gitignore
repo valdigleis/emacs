@@ -1,0 +1,4 @@
+# Ignorar os diretórios
+auto-save-list/
+eln-cache/
+elpa/
