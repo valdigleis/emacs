@@ -1,15 +1,21 @@
-(require 'package)
+;; Bootstrap do straight
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el"
+                         user-emacs-directory))
+      (bootstrap-version 6))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
 
-;; Configura os repositórios (MELPA é essencial)
-(add-to-list 'package-archives '(("melpa" . "https://melpa.org/packages/")
-				 ("gnu"   . "https://elpa.gnu.org/packages/")))
-
-;; Inicializa o sistema de pacotes
-(package-initialize)
-
-;; Garante que o use-package baixe o pacote se ele não existir localmente
-(require 'use-package)
-(setq use-package-always-ensure t)
+;; Integrar com use-package
+(straight-use-package 'use-package)
+(setq straight-use-package-by-default t)
 
 ;; Instala/configura o pacote de tema Dracula
 (use-package dracula-theme
@@ -19,3 +25,6 @@
 ;; Instala/configura o pacote rainbow-delimeters
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
+
+;; Instala/configura o pacote nerd-icons
+(use-package nerd-icons)

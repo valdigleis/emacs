@@ -1,13 +1,13 @@
 ;; Define a fonte padrão usada no emacs (a fonte tem que esta instalado no sistema)
 (set-face-attribute 'default nil 
-                    :family "Hack Nerd Font" 
+                    :font "Hack Nerd Font" 
                     :height 120 
                     :weight 'regular)
 
 ;; Garante que a fonte fixa (usada em tabelas e código) também seja a Hack
 (set-face-attribute 'fixed-pitch nil 
-                    :family "Hack Nerd Font" 
-                    :height 120)
+                    :font "Hack Nerd Font" 
+                    :height 280)
 
 ;; Ativa números de linha relativos globalmente
 (setq display-line-numbers-type 'relative)
@@ -24,9 +24,23 @@
 (when (display-graphic-p)
   (scroll-bar-mode -1))
 
+;; Desativa o tooltips
+(tooltip-mode -1)
+
 ;; Ativa o destaque para a linha sob o cursor
 (global-hl-line-mode t)
 
 ;; Ativa o destaque dos parênteses e remove o atraso no destaque
 (show-paren-mode t)
 (setq show-paren-delay 0)
+
+;; Desativa as boas-Vindas
+(setq inhibit-startup-message t)
+
+;; Define a largura do padding left/right da janela de edição
+(set-fringe-mode 10)
+
+;; Ativa o aviso de fim buffer (Apenas modo gráfico)
+(when (display-graphic-p)
+  (setq visible-bell t))
+

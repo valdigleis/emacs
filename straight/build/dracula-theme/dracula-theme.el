@@ -1,0 +1,1 @@
+/home/valdigleis/.config/emacs/straight/repos/emacs/dracula-theme.el
