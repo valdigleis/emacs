@@ -1,3 +1,9 @@
+;; ---------------------------------------------------------------------------------------
+;; Arquivo para gerenciamento de pacotes
+;; Autor: Valdigleis (valdigleis@gmail.com)
+;; Data: 01/04/2026
+;; ---------------------------------------------------------------------------------------
+
 ;; Bootstrap do straight
 (defvar bootstrap-version)
 (let ((bootstrap-file
