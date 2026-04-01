@@ -1,1 +1,0 @@
-/home/valdigleis/.config/emacs/straight/repos/use-package/emacsver.texi
