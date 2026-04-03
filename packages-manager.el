@@ -34,3 +34,14 @@
 
 ;; Instala/configura o pacote nerd-icons
 (use-package nerd-icons)
+
+;; Instala/configura o pacote treemacs
+(use-package treemacs
+  :defer t)
+
+(use-package treemacs-nerd-icons
+  :after (treemacs nerd-icons)
+  :config (treemacs-load-theme "nerd-icons"))
+
+
+
