@@ -43,5 +43,12 @@
   :after (treemacs nerd-icons)
   :config (treemacs-load-theme "nerd-icons"))
 
-
-
+(use-package centaur-tabs
+  :demand
+  :config
+  (setq centaur-tabs-set-icons t           ; Ativa o suporte a ícones
+        centaur-tabs-icon-type 'nerd-icons ; Define especificamente para usar nerd-icons
+        centaur-tabs-set-modified-marker t ; Mostra um sinal se o arquivo foi editado
+        centaur-tabs-style "bar"           ; Estilo visual das abas
+        centaur-tabs-height 32)            ; Altura da aba para acomodar bem os ícones
+  (centaur-tabs-mode t))
