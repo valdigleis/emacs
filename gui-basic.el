@@ -1,7 +1,7 @@
 ;; Define a fonte padrão usada no emacs (a fonte tem que esta instalado no sistema)
 (set-face-attribute 'default nil 
                     :font "Hack Nerd Font" 
-                    :height 120 
+                    :height 140 
                     :weight 'regular)
 
 ;; Garante que a fonte fixa (usada em tabelas e código) também seja a Hack
@@ -44,3 +44,12 @@
 (when (display-graphic-p)
   (setq visible-bell t))
 
+;; Configurando a barra inferior
+(setopt tab-bar-show 1)
+
+;; Adiciona a hora e data no tab-bar, quando este estiver visível
+(add-to-list 'tab-bar-format 'tab-bar-format-align-right 'append)
+(add-to-list 'tab-bar-format 'tab-bar-format-global 'append)
+(setopt display-time-format "%T %F %a")
+(setopt display-time-interval 1)
+(display-time-mode)
