@@ -37,18 +37,26 @@
 
 ;; Instala/configura o pacote treemacs
 (use-package treemacs
-  :defer t)
+  :defer t
+  :bind (:map global-map
+	      ("C-x t t" . treemacs)
+	      ("C-x t b" . treemacs-bookmark)
+	      ("C-x t f" . treemacs-find-file)))
 
 (use-package treemacs-nerd-icons
   :after (treemacs nerd-icons)
   :config (treemacs-load-theme "nerd-icons"))
 
+;; Instala/configura o pacote centaur-tabs
 (use-package centaur-tabs
   :demand
+  :bind
+  ("C-c b v" . centaur-tabs-backward)
+  ("C-c b n" . centaur-tabs-forward)
   :config
-  (setq centaur-tabs-set-icons t           ; Ativa o suporte a ícones
-        centaur-tabs-icon-type 'nerd-icons ; Define especificamente para usar nerd-icons
-        centaur-tabs-set-modified-marker t ; Mostra um sinal se o arquivo foi editado
-        centaur-tabs-style "bar"           ; Estilo visual das abas
-        centaur-tabs-height 32)            ; Altura da aba para acomodar bem os ícones
+  (setq centaur-tabs-set-icons t           ;; Ativa o suporte a ícones
+        centaur-tabs-icon-type 'nerd-icons ;; Define especificamente para usar nerd-icons
+        centaur-tabs-set-modified-marker t ;; Mostra um sinal se o arquivo foi editado
+        centaur-tabs-style "bar"           ;; Estilo visual das abas
+        centaur-tabs-height 35)            ;; Altura da aba para acomodar bem os ícones
   (centaur-tabs-mode t))
