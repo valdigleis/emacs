@@ -5,3 +5,5 @@ elpa/
 straight/
 .cache/
 
+# Ignorar os arquivos
+projectile-bookmarks.el

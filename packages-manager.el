@@ -60,3 +60,15 @@
         centaur-tabs-style "bar"           ;; Estilo visual das abas
         centaur-tabs-height 35)            ;; Altura da aba para acomodar bem os ícones
   (centaur-tabs-mode t))
+
+;; Instala/configura o pacote Projectile
+(use-package projectile
+  :init (projectile-mode +1)
+  :bind (:map projectile-mode-map
+	      ("C-x p" . projectile-command-map)))
+
+(use-package treemacs-projectile
+  :after (treemacs projectile))
+
+(with-eval-after-load 'treemacs
+  (treemacs-project-follow-mode t))
