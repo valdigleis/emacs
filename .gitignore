@@ -6,4 +6,4 @@ straight/
 .cache/
 
 # Ignorar os arquivos
-projectile-bookmarks.el
+projectile-bookmarks.eld
