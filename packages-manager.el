@@ -39,9 +39,9 @@
 (use-package treemacs
   :defer t
   :bind (:map global-map
-	      ("C-x t t" . treemacs)
-	      ("C-x t b" . treemacs-bookmark)
-	      ("C-x t f" . treemacs-find-file)))
+	      ("C-c t t" . treemacs)
+	      ("C-c t b" . treemacs-bookmark)
+	      ("C-c t f" . treemacs-find-file)))
 
 (use-package treemacs-nerd-icons
   :after (treemacs nerd-icons)
@@ -51,8 +51,8 @@
 (use-package centaur-tabs
   :demand
   :bind
-  ("C-c b v" . centaur-tabs-backward)
-  ("C-c b n" . centaur-tabs-forward)
+  ("C-c b [" . centaur-tabs-backward)
+  ("C-c b ]" . centaur-tabs-forward)
   :config
   (setq centaur-tabs-set-icons t           ;; Ativa o suporte a ícones
         centaur-tabs-icon-type 'nerd-icons ;; Define especificamente para usar nerd-icons
@@ -61,14 +61,43 @@
         centaur-tabs-height 35)            ;; Altura da aba para acomodar bem os ícones
   (centaur-tabs-mode t))
 
-;; Instala/configura o pacote Projectile
+;; Instala/configura o pacote projectile
 (use-package projectile
   :init (projectile-mode +1)
   :bind (:map projectile-mode-map
-	      ("C-x p" . projectile-command-map)))
+	      ("C-c p" . projectile-command-map)))
 
 (use-package treemacs-projectile
   :after (treemacs projectile))
 
 (with-eval-after-load 'treemacs
   (treemacs-project-follow-mode t))
+
+;; Instala/configura o pacote vertico
+(use-package vertico
+  :init
+  (vertico-mode)
+  :config
+  (setq vertico-cycle t))
+
+;; Instala/configura o pacote marginalia
+(use-package marginalia
+  :ensure t
+  :init
+  (marginalia-mode))
+
+;; Instala/configura o pacote nerd-icons-completion
+(use-package nerd-icons-completion
+  :ensure t
+  :after marginalia
+  :config
+  (nerd-icons-completion-mode)
+  ;; Adiciona ícones também ao Marginalia
+  (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup))
+
+;; Instala/configura o pacote orderless
+(use-package orderless
+  :ensure t
+  :custom
+  (completion-styles '(orderless basic))
+  (completion-category-overrides '((file (styles basic partial-completion)))))

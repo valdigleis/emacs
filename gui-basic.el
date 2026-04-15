@@ -13,6 +13,10 @@
 (setq display-line-numbers-type 'relative)
 (global-display-line-numbers-mode t)
 
+;; Define as cores para os números das linhas
+(set-face-attribute 'line-number nil :foreground "yellow")
+(set-face-attribute 'line-number-current-line nil :foreground "white" :weight 'bold)
+
 ;; Dica extra: desativar barras de ferramentas inúteis para ganhar espaço
 (menu-bar-mode -1)
 
