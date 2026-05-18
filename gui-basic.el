@@ -42,7 +42,8 @@
 (setq inhibit-startup-message t)
 
 ;; Define a largura do padding left/right da janela de edição
-(set-fringe-mode 10)
+(when (display-graphic-p)
+  (set-fringe-mode 10))
 
 ;; Ativa o aviso de fim buffer (Apenas modo gráfico)
 (when (display-graphic-p)
