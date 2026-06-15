@@ -100,4 +100,56 @@
   :ensure t
   :custom
   (completion-styles '(orderless basic))
+  (completion-category-defaults nil)
   (completion-category-overrides '((file (styles basic partial-completion)))))
+
+;; Instala/Configura o pacote AUCTex
+(use-package auctex
+  :defer t
+  :hook (LaTeX-mode . visual-line-mode)
+  :hook (LaTeX-mode . flyspell-mode)
+  :config
+  (setq TeX-auto-save t)
+  (setq TeX-parse-self t)
+  (setq-default TeX-master nil)
+  (setq TeX-save-query nil)
+  (setq TeX-show-compilation t)
+  (setq TeX-source-correlate-mode t)
+  (setq TeX-source-correlate-start-server t))
+
+;; Instala/Configura o pacote Corfu
+(use-package corfu
+  :straight t
+  :custom
+  (corfu-auto t)
+  (corfu-auto-delay 0.1)
+  (corfu-auto-prefix 2)
+  (corfu-cycle t)
+  :init
+  (global-corfu-mode))
+
+;; Instala/Configura o pacote cape
+(use-package cape
+  :straight t
+  :init
+  (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+  (add-to-list 'completion-at-point-functions #'cape-file))
+
+;; Insla/Configura o pacote cdlatex
+(use-package cdlatex
+  :straight t
+  :hook (LaTeX-mode . turn-on-cdlatex))
+
+;; Instala/Configura o pacote yasnippet
+(use-package yasnippet
+  :straight t
+  :init
+  (yas-global-mode 1))
+
+;; Instala/Configura o pacote reftex
+(use-package reftex
+  :hook (LaTeX-mode . reftex-mode)
+  :config
+  (setq reftex-plug-into-AUCTeX t))
+
+

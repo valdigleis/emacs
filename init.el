@@ -5,8 +5,8 @@
 (load (expand-file-name "core-basic.el" user-emacs-directory))                ;; comportamento básico
 (load (expand-file-name "gui-basic.el" user-emacs-directory))                 ;; modificações básicas de interface
 (load (expand-file-name "packages-manager.el" user-emacs-directory))          ;; gerenciamento de pacotes
+(load (expand-file-name "languages.el" user-emacs-directory))                 ;; configura o uso dos LSP's
 (load (expand-file-name "mykeys.el" user-emacs-directory))                    ;; gerencia atalhos pessoais
-
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
